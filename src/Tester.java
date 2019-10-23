@@ -24,9 +24,11 @@ import lib.stopwords.WordIterator;
 
 public class Tester {
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        String result = ""; 
+        String temp = "";
+        String[] outputReader = new String[154];
+        String[] outputStopwords = new String[154];
         
-        System.out.println("Stopwords");
+        // TXT File
         for (int i = 1; i <= 154; i++) {
             String name = "";
             if(i<10){
@@ -38,8 +40,9 @@ public class Tester {
             else if(i>=100 && i<=154){
                 name = ""+i;
             }
+            
+            // initialize input
             BufferedReader br = new BufferedReader(new FileReader("C:/Users/asus/Desktop/DataSet/Doc"+name+".txt"));
-
             try {
                 StringBuilder sb = new StringBuilder();
                 String line = br.readLine();
@@ -48,66 +51,41 @@ public class Tester {
                     sb.append(System.lineSeparator());
                     line = br.readLine();
                 }
-                result = sb.toString();
+                temp = sb.toString();
             } 
             finally {
                 br.close();
             }
-            
-            
-            // Stopwords
-            System.out.print(i+".");
-            for (final String word : new WordIterator(result)) {
-                if (StopWords.English.isStopWord(word) == false) {
-                    System.out.print(word+" ");
-                }
-            }
-            System.out.println("");
+            outputReader[i-1]=temp;
+            temp = "";
         }
         
-        System.out.println("");
-        
-        System.out.println("Porter Stemmer");
+        // Stopwords
         for (int i = 1; i <= 154; i++) {
-            String name = "";
-            if(i<10){
-                name = "00"+i;
-            }
-            else if(i>=10 && i<100){
-                name = "0"+i;
-            }
-            else if(i>=100 && i<=154){
-                name = ""+i;
-            }
-            BufferedReader br = new BufferedReader(new FileReader("C:/Users/asus/Desktop/DataSet/Doc"+name+".txt"));
-
-            try {
-                StringBuilder sb = new StringBuilder();
-                String line = br.readLine();
-                while (line != null) {
-                    sb.append(line);
-                    sb.append(System.lineSeparator());
-                    line = br.readLine();
+            for (final String word : new WordIterator(outputReader[i-1])) {
+                if (StopWords.English.isStopWord(word) == false) {
+                    temp += word+" ";
                 }
-                result = sb.toString();
-            } 
-            finally {
-                br.close();
             }
-            
-            // Porter Stemmer
-            System.out.print(i+".");
+            outputStopwords[i-1]=temp;
+            temp = "";
+        }
+        
+        // Porter Stemmer
+        for (int i = 1; i <= 154; i++) {
             porterStemmer stemmer = new porterStemmer(); 
-            String input = result.replaceAll("\r\n", "").replaceAll("[^a-zA-Z0-9]", " ");
-            String[] arrInput =  input.split(" ");
+            temp = outputStopwords[i-1];
+            String[] arrInput =  temp.split(" ");
             for (int j = 0; j < arrInput.length; j++) {
                 stemmer.setCurrent(arrInput[j]);
                 stemmer.stem();
-                System.out.print(stemmer.getCurrent()+" ");
+                temp += stemmer.getCurrent()+" ";
                 
             }
             
-            System.out.println("");
+            //print output
+            System.out.println(i+". "+temp);
+            temp = "";
         }
     }
 }
