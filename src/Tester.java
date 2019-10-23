@@ -25,6 +25,7 @@ import lib.stopwords.WordIterator;
 public class Tester {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         String result = ""; 
+        
         System.out.println("Stopwords");
         for (int i = 1; i <= 154; i++) {
             String name = "";
@@ -37,20 +38,7 @@ public class Tester {
             else if(i>=100 && i<=154){
                 name = ""+i;
             }
-            BufferedReader br = new BufferedReader(new FileReader("C:/Users/asus/Desktop/DataSet/Doc"+name+".txt"));
-            try {
-                StringBuilder sb = new StringBuilder();
-                String line = br.readLine();
-                while (line != null) {
-                    sb.append(line);
-                    sb.append(System.lineSeparator());
-                    line = br.readLine();
-                }
-                result = sb.toString();
-            } 
-            finally {
-                br.close();
-            }
+            
             
             // Stopwords
             System.out.print(i+".");
@@ -61,8 +49,10 @@ public class Tester {
             }
             System.out.println("");
         }
+        
         System.out.println("");
         System.out.println("");
+        
         System.out.println("Porter Stemmer");
         for (int i = 1; i <= 154; i++) {
             String name = "";
@@ -90,7 +80,6 @@ public class Tester {
             finally {
                 br.close();
             }
-           
             
             // Porter Stemmer
             System.out.print(i+".");
@@ -105,10 +94,6 @@ public class Tester {
             }
             
             System.out.println("");
-            
-            
-            
         }
-        
     }
 }
