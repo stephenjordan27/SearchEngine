@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import lib.stopwords.StopWords;
 import lib.porterstemmer.porterStemmer;
@@ -30,6 +33,7 @@ public class Tester {
         String[] outputTXT = new String[154];
         String[] outputStopwords = new String[154];
         String[] outputNormalization = new String[154];
+        String[] outputStemmer = new String[154];
         
         // TXT File
         for (int i = 1; i <= 154; i++) {
@@ -97,11 +101,12 @@ public class Tester {
                 stemmer.stem();
                 temp += stemmer.getCurrent()+" ";
             }
+            outputStemmer[i-1] = temp;
             
             System.out.println(i+". "+temp);
             input = "";
         }
-        
+
         System.out.println("");
         
         //Statistik : Jumlah dokumen
@@ -124,11 +129,29 @@ public class Tester {
         System.out.println("");
         
         //Statistik : Jumlah rata-rata words per dokumen
-
         System.out.println("Jumlah rata-rata words per dokumen");
         int rata2 = jumlahWords/154;
         System.out.println(rata2);
-         
+        
+        System.out.println("");
+        
+        //Statistik : Jumlah terms dari seluruh dokumen
+        System.out.println("Jumlah terms dari seluruh dokumen");
+        int jumlahTerms = 0;
+        for (int i = 1; i <= 154; i++) {
+            input = outputStemmer[i-1];
+            String[] words = input.replaceAll("\r\n", " ").replaceAll("[^a-zA-Z] ", " ").split(" ");
+            jumlahTerms+=words.length;
+        }
+        System.out.println(jumlahTerms);
+        
+        System.out.println("");
+        
+        //Statistik : Jumlah rata-rata terms per dokumen
+
+        System.out.println("Jumlah rata-rata terms per dokumen");
+        int rata2T = jumlahTerms/154;
+        System.out.println(rata2T);
         
     }
 }
