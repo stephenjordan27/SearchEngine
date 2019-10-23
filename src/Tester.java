@@ -29,6 +29,7 @@ public class Tester {
         String input = "";
         String[] outputTXT = new String[154];
         String[] outputStopwords = new String[154];
+        String[] outputNormalization = new String[154];
         
         // TXT File
         for (int i = 1; i <= 154; i++) {
@@ -82,11 +83,22 @@ public class Tester {
                 stemmer.setCurrent(arrInput[j]);
                 stemmer.stem();
                 input += stemmer.getCurrent()+" ";
-                
             }
             
-            //print output
             System.out.println(i+". "+input);
+            input = "";
+        }
+        
+        // Normalization
+        for (int i = 1; i <= 154; i++) {
+            input = outputStopwords[i-1];
+            String temp = Normalization.formatString(input);
+            temp = temp.toLowerCase().replace("//’", "");
+            outputNormalization[i-1] = temp;
+            input += outputNormalization[i-1];
+            
+            //print output
+            
             input = "";
         }
         
