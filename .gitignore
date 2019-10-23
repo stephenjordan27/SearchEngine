@@ -1,0 +1,4 @@
+*.class
+*.jar
+preprocessed_dataset
+raw_dataset
