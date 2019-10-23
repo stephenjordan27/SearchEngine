@@ -11,7 +11,7 @@
    limitations under the License.
  */
 
-package lib;
+package lib.stopwords;
 
 import java.util.ArrayList;
 import java.util.Collections;

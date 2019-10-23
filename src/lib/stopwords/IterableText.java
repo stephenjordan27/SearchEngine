@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lib;
+package lib.stopwords;
 
 import java.util.Iterator;
 
 abstract class IterableText implements Iterator<String>, Iterable<String> {
-        public Iterator<String> iterator() {
-                return this;
-        }
+    public Iterator<String> iterator() {
+            return this;
+    }
 }

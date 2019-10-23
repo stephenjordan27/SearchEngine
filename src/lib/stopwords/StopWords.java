@@ -11,7 +11,7 @@
    limitations under the License.
  */
 
-package lib;
+package lib.stopwords;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import lib.Counter;
-import lib.WordIterator;
+import lib.stopwords.Counter;
+import lib.stopwords.WordIterator;
 
 /**
  * 
@@ -32,12 +32,7 @@ import lib.WordIterator;
  * 
  */
 public enum StopWords {
-    Arabic(), Armenian(), Catalan(true), Croatian(), Czech(), Dutch(), //
-    Danish(), English(), Esperanto(), Farsi(), Finnish(), //
-    French(true), German(), Greek(), Hindi(), Hungarian(), //
-    Italian(), Latin(), Norwegian(), Polish(), Portuguese(), //
-    Romanian(), Russian(), Slovenian(), Slovak(), Spanish(), //
-    Swedish(), Hebrew(), Turkish(), Custom();
+    English();
 
     public static StopWords guess(final String text) {
         return guess(new Counter<String>(new WordIterator(text)));
