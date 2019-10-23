@@ -3,14 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/stopwords/StopWords.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/porterstemmer/Among.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/porterstemmer/porterStemmer.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/stopwords/IterableText.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/stopwords/Counter.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/MyUtils.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/stopwords/WordIterator.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/OurPipeline.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/stopwords/StopWords.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/stopwords/english</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/porterstemmer/Among.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/Preprocessor.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/Main.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/Tester.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/porterstemmer/SnowballStemmer.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/stopwords/WordIterator.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/YouRSearchEngine/src/lib/porterstemmer/SnowballProgram.java</file>
         </group>
     </open-files>

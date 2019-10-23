@@ -12,8 +12,8 @@ import lib.stopwords.WordIterator;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this inputlate file, choose Tools | Templates
+ * and open the inputlate in the editor.
  */
 
 /**
@@ -24,8 +24,8 @@ import lib.stopwords.WordIterator;
 
 public class Tester {
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        String temp = "";
-        String[] outputReader = new String[154];
+        String input = "";
+        String[] outputTXT = new String[154];
         String[] outputStopwords = new String[154];
         
         // TXT File
@@ -51,41 +51,61 @@ public class Tester {
                     sb.append(System.lineSeparator());
                     line = br.readLine();
                 }
-                temp = sb.toString();
+                input = sb.toString();
             } 
             finally {
                 br.close();
             }
-            outputReader[i-1]=temp;
-            temp = "";
+            outputTXT[i-1]=input;
+            input = "";
         }
         
         // Stopwords
         for (int i = 1; i <= 154; i++) {
-            for (final String word : new WordIterator(outputReader[i-1])) {
+            for (final String word : new WordIterator(outputTXT[i-1])) {
                 if (StopWords.English.isStopWord(word) == false) {
-                    temp += word+" ";
+                    input += word+" ";
                 }
             }
-            outputStopwords[i-1]=temp;
-            temp = "";
+            outputStopwords[i-1]=input;
+            input = "";
         }
         
         // Porter Stemmer
         for (int i = 1; i <= 154; i++) {
             porterStemmer stemmer = new porterStemmer(); 
-            temp = outputStopwords[i-1];
-            String[] arrInput =  temp.split(" ");
+            input = outputStopwords[i-1];
+            String[] arrInput =  input.split(" ");
             for (int j = 0; j < arrInput.length; j++) {
                 stemmer.setCurrent(arrInput[j]);
                 stemmer.stem();
-                temp += stemmer.getCurrent()+" ";
+                input += stemmer.getCurrent()+" ";
                 
             }
             
             //print output
-            System.out.println(i+". "+temp);
-            temp = "";
+            System.out.println(i+". "+input);
+            input = "";
         }
+        
+        System.out.println("");
+        
+        //Statistik : Jumlah words dari seluruh dokumen
+        System.out.println("Jumlah words dari seluruh dokumen");
+        int jumlahWords = 0;
+        for (int i = 1; i <= 154; i++) {
+            input = outputTXT[i-1];
+            String[] words = input.replaceAll("\r\n", " ").replaceAll("[^a-zA-Z] ", " ").split(" ");
+            jumlahWords+=words.length;
+        }
+         System.out.println(jumlahWords);
+        
+        System.out.println("");
+        
+        //Statistik : Jumlah rata-rata words per dokumen
+        System.out.println("Jumlah words dari seluruh dokumen");
+        int rata2 = jumlahWords/154;
+        System.out.println(rata2);
+         
     }
 }
