@@ -79,14 +79,9 @@ public class Tester {
             input = outputStopwords[i-1];
             String[] arrInput =  input.split(" ");
             for (int j = 0; j < arrInput.length; j++) {
-                stemmer.setCurrent("analysis");
+                stemmer.setCurrent(arrInput[j]);
                 stemmer.stem();
-                String input2 = stemmer.getCurrent()+" ";
-//                stemmer.setCurrent(arrInput[j]);
-//                stemmer.stem();
-//                input += stemmer.getCurrent()+" ";
-                System.out.println("");
-                
+                input += stemmer.getCurrent()+" ";
             }
             
             //print output
@@ -116,11 +111,8 @@ public class Tester {
         System.out.println("");
         
         //Statistik : Jumlah rata-rata words per dokumen
-<<<<<<< HEAD
+
         System.out.println("Jumlah rata-rata words per dokumen");
-=======
-        System.out.println("Rata-rata words dari seluruh dokumen");
->>>>>>> master
         int rata2 = jumlahWords/154;
         System.out.println(rata2);
          
