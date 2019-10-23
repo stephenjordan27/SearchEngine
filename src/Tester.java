@@ -1,8 +1,10 @@
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,14 +20,12 @@ import lib.stopwords.WordIterator;
  * To change this inputlate file, choose Tools | Templates
  * and open the inputlate in the editor.
  */
-
 /**
  *
  * @author asus
  */
-
-
 public class Tester {
+
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
         //bagian ini diisi dengan direktori tempat file dokumen berada

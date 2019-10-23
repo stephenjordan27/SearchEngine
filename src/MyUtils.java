@@ -1,3 +1,4 @@
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -123,14 +124,14 @@ class MyUtils{
 	public static void readAllVoid(File f){
         try{
             BufferedReader br = new BufferedReader(new FileReader(f));
-			String line="";
-			while((line = br.readLine())!= null ){
-				System.out.println(line);
-			}
-        }catch(FileNotFoundException e){
-            System.out.println("Error: File: "+f.getName()+" not found!");
-        }catch(IOException e){
-            System.out.println("Error reading file : "+f.getName());
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File: " + f.getName() + " not found!");
+        } catch (IOException e) {
+            System.out.println("Error reading file : " + f.getName());
         }
 	}
 	
