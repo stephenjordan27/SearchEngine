@@ -1,16 +1,16 @@
 
+import lib.normalization.Normalization;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import lib.stopwords.StopWords;
 import lib.porterstemmer.porterStemmer;
 import lib.stopwords.WordIterator;
+import lib.normalization.Normalization;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,6 +29,7 @@ public class Tester {
         String input = "";
         String[] outputTXT = new String[154];
         String[] outputStopwords = new String[154];
+        String[] outputNormalization = new String[154];
         
         // TXT File
         for (int i = 1; i <= 154; i++) {
@@ -58,7 +59,8 @@ public class Tester {
             finally {
                 br.close();
             }
-            outputTXT[i-1]=input;
+            // Case Folding
+            outputTXT[i-1]=input.toLowerCase();
             input = "";
         }
         
@@ -73,19 +75,30 @@ public class Tester {
             input = "";
         }
         
+        // Normalization
+        for (int i = 1; i <= 154; i++) {
+            input = outputStopwords[i-1];
+            String temp = Normalization.formatString(input);
+            outputNormalization[i-1] = temp;
+            
+            //print output
+//            System.out.println(i+". "+outputNormalization[i-1]);
+            input = "";
+        }
+        
         // Porter Stemmer
         for (int i = 1; i <= 154; i++) {
             porterStemmer stemmer = new porterStemmer(); 
-            input = outputStopwords[i-1];
+            input = outputNormalization[i-1];
+            String temp = "";
             String[] arrInput =  input.split(" ");
             for (int j = 0; j < arrInput.length; j++) {
                 stemmer.setCurrent(arrInput[j]);
                 stemmer.stem();
-                input += stemmer.getCurrent()+" ";
+                temp += stemmer.getCurrent()+" ";
             }
             
-            //print output
-            System.out.println(i+". "+input);
+            System.out.println(i+". "+temp);
             input = "";
         }
         
@@ -106,7 +119,7 @@ public class Tester {
             String[] words = input.replaceAll("\r\n", " ").replaceAll("[^a-zA-Z] ", " ").split(" ");
             jumlahWords+=words.length;
         }
-         System.out.println(jumlahWords);
+        System.out.println(jumlahWords);
         
         System.out.println("");
         
