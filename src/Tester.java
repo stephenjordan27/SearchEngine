@@ -1,8 +1,10 @@
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -94,6 +96,13 @@ public class Tester {
         
         System.out.println("");
         
+        //Statistik : Jumlah dokumen
+        System.out.println("Jumlah dokumen");
+        File inputFile = new File("C://Users//asus//Desktop//DataSet");
+	ArrayList<File> files = MyUtils.listFilesForFolder(inputFile);
+        System.out.println(files.size());
+        System.out.println("");
+        
         //Statistik : Jumlah words dari seluruh dokumen
         System.out.println("Jumlah words dari seluruh dokumen");
         int jumlahWords = 0;
@@ -107,7 +116,11 @@ public class Tester {
         System.out.println("");
         
         //Statistik : Jumlah rata-rata words per dokumen
+<<<<<<< HEAD
         System.out.println("Jumlah rata-rata words per dokumen");
+=======
+        System.out.println("Rata-rata words dari seluruh dokumen");
+>>>>>>> master
         int rata2 = jumlahWords/154;
         System.out.println(rata2);
          
