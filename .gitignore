@@ -4,3 +4,6 @@ preprocessed_dataset
 raw_dataset
 /dist/
 build
+*.xml
+
+*.properties
