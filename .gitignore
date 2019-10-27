@@ -6,3 +6,7 @@ preprocessed_dataset
 build
 *.xml
 *.properties
+
+*.properties
+
+*.xml
