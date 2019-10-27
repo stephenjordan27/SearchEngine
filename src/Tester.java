@@ -29,7 +29,10 @@ import lib.normalization.Normalization;
 public class Tester {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        String input = "";
+        
+        //bagian ini diisi dengan direktori tempat file dokumen berada
+        String inputPath = "F:/SEMESTER 7 GANJIL 2019-2020/Pencarian dan Temu Kembali Informasi/YouRSearchEngine/raw_dataset";
+        String input="";
         String[] outputTXT = new String[154];
         String[] outputStopwords = new String[154];
         String[] outputNormalization = new String[154];
@@ -49,7 +52,7 @@ public class Tester {
             }
             
             // initialize input
-            BufferedReader br = new BufferedReader(new FileReader("C:/Users/asus/Desktop/DataSet/Doc"+name+".txt"));
+            BufferedReader br = new BufferedReader(new FileReader(inputPath+"/Doc"+name+".txt"));
             try {
                 StringBuilder sb = new StringBuilder();
                 String line = br.readLine();
@@ -78,6 +81,9 @@ public class Tester {
             outputStopwords[i-1]=input;
             input = "";
         }
+        
+        //lemmatization
+        outputStopwords = Preprocessor.lemmatize(outputStopwords);
         
         // Normalization
         for (int i = 1; i <= 154; i++) {
@@ -111,7 +117,7 @@ public class Tester {
         
         //Statistik : Jumlah dokumen
         System.out.println("Jumlah dokumen");
-        File inputFile = new File("C://Users//asus//Desktop//DataSet");
+        File inputFile = new File(inputPath);
 	ArrayList<File> files = MyUtils.listFilesForFolder(inputFile);
         System.out.println(files.size());
         System.out.println("");

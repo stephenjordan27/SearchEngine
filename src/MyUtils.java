@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.json.*;
 
 class MyUtils {
     //references: https://stackoverflow.com/questions/1844688/how-to-read-all-files-in-a-folder-from-java
@@ -117,35 +116,35 @@ class MyUtils {
         return lines;
     }
 
-    public static String statistics(File inputDir, String unit) {
-        ArrayList<File> files = listFilesForFolder(inputDir);
-        Iterator<File> iFile = files.iterator();
-
-        long total_words = 0;
-        long per_doc_words = 0;
-        long doc_num = files.size();
-
-        JSONObject resObj = new JSONObject();
-        try {
-            resObj.put("doc_num", doc_num);
-
-            while (iFile.hasNext()) {
-                ArrayList<String> lines = readAll(iFile.next());
-                Iterator<String> iString = lines.iterator();
-                while (iString.hasNext()) {
-                    total_words += iString.next().split(" ").length;
-                }
-            }
-
-            resObj.put("total_" + unit + "s", total_words);
-
-            double avg_word = total_words / doc_num * 1.0;
-
-            resObj.put("avg_" + unit + "s", avg_word);
-        } catch (JSONException e) {
-            System.out.println("JSON exception");
-        }
-
-        return resObj.toString();
-    }
+//    public static String statistics(File inputDir, String unit) {
+//        ArrayList<File> files = listFilesForFolder(inputDir);
+//        Iterator<File> iFile = files.iterator();
+//
+//        long total_words = 0;
+//        long per_doc_words = 0;
+//        long doc_num = files.size();
+//
+//        JSONObject resObj = new JSONObject();
+//        try {
+//            resObj.put("doc_num", doc_num);
+//
+//            while (iFile.hasNext()) {
+//                ArrayList<String> lines = readAll(iFile.next());
+//                Iterator<String> iString = lines.iterator();
+//                while (iString.hasNext()) {
+//                    total_words += iString.next().split(" ").length;
+//                }
+//            }
+//
+//            resObj.put("total_" + unit + "s", total_words);
+//
+//            double avg_word = total_words / doc_num * 1.0;
+//
+//            resObj.put("avg_" + unit + "s", avg_word);
+//        } catch (JSONException e) {
+//            System.out.println("JSON exception");
+//        }
+//
+//        return resObj.toString();
+//    }
 }
