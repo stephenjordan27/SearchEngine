@@ -34,6 +34,46 @@ class MyUtils{
 		return files;
 	}
 	
+        /**
+     * Code By Stephen Jordan 2016730018
+     *
+     */
+    public static String[] readFiles(String dir) {
+        String[] output = new String[154];
+        String input = "";
+        try {
+            for (int i = 1; i <= 154; i++) {
+                String name = "";
+                if (i < 10) {
+                    name = "00" + i;
+                } else if (i >= 10 && i < 100) {
+                    name = "0" + i;
+                } else if (i >= 100 && i <= 154) {
+                    name = "" + i;
+                }
+
+                // initialize input
+                BufferedReader br = new BufferedReader(new FileReader(dir + "/Doc" + name + ".txt"));
+                StringBuilder sb = new StringBuilder();
+                String line = br.readLine();
+                while (line != null) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                    line = br.readLine();
+                }
+                input = sb.toString();
+
+                br.close();
+
+                output[i - 1] = input;
+                input = "";
+            }
+        } catch (IOException e) {
+
+        }
+        return output;
+    }
+        
 	public static void readAllVoid(File f){
         try{
             BufferedReader br = new BufferedReader(new FileReader(f));
@@ -69,4 +109,13 @@ class MyUtils{
             }	
             return lines;
 	}
+        
+         /**
+     * Query Result adalah list dokumen dokumen yang ada
+     */
+    public static void getBagOfWords(ArrayList<String> queryResults){
+        //queryResults hanya berisi nama file dalam string biasa
+        //sementara bag of words perlu list seluruh kata di dokumen
+        //kalau baca dari disk lama lagi... 
+    }
 }
