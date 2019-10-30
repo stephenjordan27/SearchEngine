@@ -1,6 +1,8 @@
 *.class
 *.jar
 dist
+dictionary2.txt
+preprocessed_dataset
 build
 nbproject
 *.xml
