@@ -1,9 +1,7 @@
 *.class
 *.jar
-preprocessed_dataset
-raw_dataset
-/dist/
+dist
 build
+nbproject
 *.xml
-
 *.properties
