@@ -89,5 +89,5 @@ public class FXMLDocumentController implements Initializable {
         long end = System.currentTimeMillis();
         System.out.println("Creating dictionary takes: "+(end-start));
     }    
-    
+   
 }

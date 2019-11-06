@@ -3,8 +3,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException; 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class MyUtils{
 	//references: https://stackoverflow.com/questions/1844688/how-to-read-all-files-in-a-folder-from-java
@@ -72,6 +76,48 @@ class MyUtils{
 
         }
         return output;
+    }
+    
+    public static void writeFiles(String text, int num)
+    {
+        String outputPath = "cleaned_dataset";
+        File file = new File(outputPath + "\\Doc" + num + ".txt");
+        BufferedWriter bw = null;
+        try 
+        {
+            FileWriter fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            String[] tempText = text.split(" ");
+            int count = 0;
+            for(int i=0;i<tempText.length;i++)
+            {
+                String temp = tempText[i];
+                bw.write(temp + " ");
+                count++;
+                if(count==10)
+                {
+                    bw.newLine();
+                    count = 0;
+                }   
+            }
+            System.out.println("File Doc " + num + " written successfully");
+        } 
+        catch (IOException ex) 
+        {
+            ex.printStackTrace();
+        }
+        finally
+	{ 
+            try
+            {
+                if(bw!=null)
+                    bw.close();
+	    }
+            catch(Exception ex)
+            {
+	       System.out.println("Error in closing the BufferedWriter"+ex);
+	    }
+	}
     }
         
 	public static void readAllVoid(File f){

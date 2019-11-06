@@ -105,9 +105,9 @@ public class Tester {
                 stemmer.stem();
                 temp += stemmer.getCurrent()+" ";
             }
-            outputStemmer[i-1] = temp;
-            
+            outputStemmer[i-1] = temp; 
             System.out.println(i+". "+temp);
+            MyUtils.writeFiles(temp, i);
             input = "";
         }
 
