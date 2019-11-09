@@ -5,11 +5,15 @@
  */
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+import java.util.zip.GZIPInputStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,11 +30,7 @@ import javafx.scene.control.TextField;
  */
 public class FXMLDocumentController implements Initializable {
     
-    private TreeMap<String,ArrayList<String>> dictionary = new TreeMap<String,ArrayList<String>>(new Comparator<String>() {
-                public int compare(String s1, String s2) {
-                    return s1.compareTo((s2));
-                }
-            });
+    private TreeMap<String,ArrayList<String>> dictionary;
     @FXML
     private Label label,LabelProcessingTime;
     
@@ -60,8 +60,10 @@ public class FXMLDocumentController implements Initializable {
         
         long start = System.currentTimeMillis();
         String query = Preprocessor.preProcess(text);
-        ArrayList<String> result = this.dictionary.get(query.trim());
-
+        ArrayList<String> result = null;
+        if(query.length()>0){
+            result = this.dictionary.get(query.trim());
+        }
         System.out.println("query = "+query);
         if(result==null){
             System.out.println("warning result null");
@@ -72,22 +74,26 @@ public class FXMLDocumentController implements Initializable {
         
         ObservableList<String> test = FXCollections.<String>observableArrayList(result);
         this.ListViewResult.getItems().addAll(test);
-        this.LabelProcessingTime.setText("Menampilkan "+result.size()+" hasil("+(end-start)/100+" detik)");
+        String queryProcTime = String.format(" %.4f",(end-start)*1.0/1000*1.0);
+        this.LabelProcessingTime.setText("Menampilkan "+result.size()+" hasil("+queryProcTime+" detik)");
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        String dir="raw_dataset";
-        String outDir="preprocessed_dataset";
-        
-        File f =new File(dir);
-        File fout=new File(outDir);
-        //Preprocessor.preProcess(f, fout);
         long start = System.currentTimeMillis();
-        //this.dictionary = Preprocessor.createDictionary(MyUtils.listFilesForFolder(f));
+        Preprocessor.init();
+        try{
+            ObjectInputStream oi = new ObjectInputStream(new GZIPInputStream(new FileInputStream("inverted_index.dat")));
+            this.dictionary  = ( TreeMap<String, ArrayList<String>>) oi.readObject();
+        }catch(IOException ex){
+            System.out.println("e1");
+            ex.printStackTrace();
+        }catch (ClassNotFoundException ex){
+            System.out.println("e2");
+            ex.printStackTrace();
+        }
         long end = System.currentTimeMillis();
-        System.out.println("Creating dictionary takes: "+(end-start));
+        System.out.println("Reading dictionary +initialization takes: "+(end-start));
     }    
    
 }

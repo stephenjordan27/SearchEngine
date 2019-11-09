@@ -55,18 +55,6 @@ public class Tester {
             System.out.println("IOException has been occured");
             ex.printStackTrace();
         }
-        try{
-            ObjectInputStream oi = new ObjectInputStream(new GZIPInputStream(new FileInputStream("inverted_index.dat")));
-            
-            TreeMap<String, ArrayList<String>> tmp  = ( TreeMap<String, ArrayList<String>>) oi.readObject();
-            System.out.println(tmp.equals(invertedIndex));
-        }catch(IOException ex){
-            System.out.println("e1");
-            ex.printStackTrace();
-        }catch (ClassNotFoundException ex){
-            System.out.println("e2");
-            ex.printStackTrace();
-        }
         System.out.println("Building Inverted Index takes: "+(System.currentTimeMillis()-startTime)+" milliseconds");
     }
 }
