@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javax.naming.directory.SearchResult;
 
 /**
  *
@@ -52,8 +53,15 @@ public class FXMLDocumentController implements Initializable {
     //References: https://examples.javacodegeeks.com/desktop-java/javafx/listview-javafx/javafx-listview-example/
     @FXML
     private void handleSearchButton(ActionEvent event){
+        //Hasil boolean query : resul
         BooleanQuery bq = new BooleanQuery(dictionary, "fairest and time and not rose");
-        ArrayList<String> abc = bq.documentBooleanQuery();
+        ArrayList<String> result2 = bq.documentBooleanQuery();
+        
+        PrecisionRecallCalculator calculator = new PrecisionRecallCalculator("asd", 7);
+        SearchResults search = new SearchResults(result2);
+        calculator.calculate(search);
+        int sasd = calculator.getRelevantDocumentsFound();
+        
         this.ListViewResult.getItems().clear();
         String text = this.TextFieldQuery.getText();
         System.out.println("you searched: "+text);
