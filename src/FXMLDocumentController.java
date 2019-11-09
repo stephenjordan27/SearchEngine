@@ -52,9 +52,10 @@ public class FXMLDocumentController implements Initializable {
     //References: https://examples.javacodegeeks.com/desktop-java/javafx/listview-javafx/javafx-listview-example/
     @FXML
     private void handleSearchButton(ActionEvent event){
+        BooleanQuery bq = new BooleanQuery(dictionary, "fairest and time and not rose");
+        ArrayList<String> abc = bq.documentBooleanQuery();
         this.ListViewResult.getItems().clear();
         String text = this.TextFieldQuery.getText();
-        
         System.out.println("you searched: "+text);
         System.out.println("Dictionary size: "+this.dictionary.size());
         
