@@ -200,7 +200,7 @@ class SearchResults {
 	public List<String> list;
 	public int relevantResults;
 	
-	public SearchResults(ArrayList<String> actual_result) {
+	public SearchResults(ArrayList<String> actual_result,int relevantResults) {
             this.list = actual_result;
             this.relevantResults = 0;
 	}

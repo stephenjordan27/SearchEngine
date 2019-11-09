@@ -54,30 +54,28 @@ public class BooleanQuery {
         boolean hasNotOperator = false;
         
         for(String term : queryTerm){
-            if(operator == "" ||  operands == null){
+            if(operator == "" ||  operands == null && !term.equalsIgnoreCase("NOT")){
                 if(term.equalsIgnoreCase("AND") || term.equalsIgnoreCase("OR")){
                     operator = term;
                 }
-                else if(term.equalsIgnoreCase("NOT")){
-                    hasNotOperator = true;
-                }
                 else{
                     operands = GetTermIncidenceVector(term);
-                    if(hasNotOperator && operator == ""){
-                        operands = ProcessBooleanOperator("NOT",operands,null);
-                    }
+                    
                 }
             }
+            else if(term.equalsIgnoreCase("NOT")){
+                hasNotOperator = true;
+            }
+            else if(hasNotOperator && operator != ""){
+                operands = ProcessBooleanOperator(operator,operands,ProcessBooleanOperator("NOT",GetTermIncidenceVector(term),null));
+                hasNotOperator = false;
+            }
+            else if(hasNotOperator && operator == ""){
+                operands = ProcessBooleanOperator("NOT",operands,null);
+            }
             else{
-                if(hasNotOperator && operator != ""){
-                    operands = ProcessBooleanOperator(operator,operands,ProcessBooleanOperator("NOT",operands,null));
-                    hasNotOperator = false;
-                    operator = "";
-                }
-                else{
-                    operands = ProcessBooleanOperator(operator,operands,GetTermIncidenceVector(term));
-                    operator = "";
-                }
+                operands = ProcessBooleanOperator(operator,operands,GetTermIncidenceVector(term));
+                operator = "";
             }
             
         }

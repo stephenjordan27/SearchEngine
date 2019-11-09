@@ -58,8 +58,9 @@ public class FXMLDocumentController implements Initializable {
         ArrayList<String> result2 = bq.documentBooleanQuery();
         
         PrecisionRecallCalculator calculator = new PrecisionRecallCalculator("asd", 7);
-        SearchResults search = new SearchResults(result2);
+        SearchResults search = new SearchResults(result2,154);
         calculator.calculate(search);
+        calculator.calculateAveragePrecision();
         int sasd = calculator.getRelevantDocumentsFound();
         
         this.ListViewResult.getItems().clear();
