@@ -54,11 +54,11 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleSearchButton(ActionEvent event){
         //Hasil boolean query : resul
-        BooleanQuery bq = new BooleanQuery(dictionary, "fairest and time and not rose");
+        BooleanQuery bq = new BooleanQuery(dictionary, "fairest or sunken");
         ArrayList<String> result2 = bq.documentBooleanQuery();
         
         PrecisionRecallCalculator calculator = new PrecisionRecallCalculator("asd", 7);
-        SearchResults search = new SearchResults(result2,154);
+        SearchResults search = new SearchResults(result2,7);
         calculator.calculate(search);
         calculator.calculateAveragePrecision();
         int sasd = calculator.getRelevantDocumentsFound();

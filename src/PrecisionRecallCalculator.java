@@ -202,6 +202,6 @@ class SearchResults {
 	
 	public SearchResults(ArrayList<String> actual_result,int relevantResults) {
             this.list = actual_result;
-            this.relevantResults = 0;
+            this.relevantResults = relevantResults;
 	}
 }

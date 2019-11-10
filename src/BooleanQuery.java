@@ -88,17 +88,23 @@ public class BooleanQuery {
         List<String> documents = dictionary.get(term);
         List<Integer> incidenceVector = new ArrayList<Integer>();
         int docindex = 0;
-        for (int i = 1; i <= 156; i++) {
+        for (int i = 1; i <= 154; i++) {
             //incidence vector for each terms
-            if (documents != null && Integer.parseInt(documents.get(docindex).substring(3,6)) == i){
-                //document contains the term
-                incidenceVector.add(1); 
-                docindex++;
+            try{
+                if (documents != null && docindex < documents.size() && Integer.parseInt(documents.get(docindex).substring(3,6)) == i){
+                    //document contains the term
+                    incidenceVector.add(1); 
+                    docindex++;
+                }
+                else{
+                    //document do not contains the term
+                    incidenceVector.add(0); 
+                }
             }
-            else{
-                //document do not contains the term
-                incidenceVector.add(0); 
+            catch(Exception e){
+                System.out.println("");
             }
+            
         }
         return incidenceVector;
     } 
