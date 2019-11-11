@@ -78,7 +78,7 @@ class MyUtils{
         return output;
     }
     
-    public static void writeFiles(String text, int num)
+    public static void writeFiles(String text, String num)
     {
         String outputPath = "cleaned_dataset";
         File outputDir = new File("cleaned_dataset");

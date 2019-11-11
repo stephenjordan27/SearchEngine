@@ -1,3 +1,5 @@
 *.class
 *.jar
 dist
+cleaned_dataset
+/data_preprocessor/DataPreprocessor/build/

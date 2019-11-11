@@ -107,7 +107,7 @@ public class Tester {
             }
             outputStemmer[i-1] = temp; 
             System.out.println(i+". "+temp);
-            MyUtils.writeFiles(temp, i);
+            MyUtils.writeFiles(temp, String.format("%03d",i));
             input = "";
         }
         long endTime = System.currentTimeMillis();

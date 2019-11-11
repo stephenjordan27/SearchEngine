@@ -44,7 +44,19 @@ public class Tester {
                 currKey = iSet.next();
                 if(currKey.length()>0){
                     value = invertedIndex.get(currKey);
-                    bw.write(currKey + " -> " + value.toString()+"\n");
+                    String postingList = "[";
+                    boolean first =true;
+                    for (int i = 0; i < value.size(); i++) {
+                        if(first){
+                            first = false;
+                        }else{
+                            postingList += ", ";
+                        }
+                        String docID = value.get(i);
+                        postingList += docID.substring(3,6);
+                    }
+                    postingList += "]";
+                    bw.write(currKey + " -> " +postingList+"\n");
                 }
             }
             bw.close();
