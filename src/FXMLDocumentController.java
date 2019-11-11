@@ -4,12 +4,14 @@
  * and open the template in the editor.
  */
 
-import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+import java.util.zip.GZIPInputStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javax.naming.directory.SearchResult;
 
 /**
  *
@@ -27,11 +28,8 @@ import javax.naming.directory.SearchResult;
  */
 public class FXMLDocumentController implements Initializable {
     
-    private TreeMap<String,ArrayList<String>> dictionary = new TreeMap<String,ArrayList<String>>(new Comparator<String>() {
-                public int compare(String s1, String s2) {
-                    return s1.compareTo((s2));
-                }
-            });
+    private TreeMap<String,ArrayList<String>> dictionary;
+    private BooleanQuery bq;
     @FXML
     private Label label,LabelProcessingTime;
     
@@ -53,9 +51,12 @@ public class FXMLDocumentController implements Initializable {
     //References: https://examples.javacodegeeks.com/desktop-java/javafx/listview-javafx/javafx-listview-example/
     @FXML
     private void handleSearchButton(ActionEvent event){
-        //Hasil boolean query : resul
-        BooleanQuery bq = new BooleanQuery(dictionary, "fairest or sunken");
-        ArrayList<String> result2 = bq.documentBooleanQuery();
+        //Hasil boolean query : resul        
+        this.ListViewResult.getItems().clear();
+        String text = this.TextFieldQuery.getText();
+        ArrayList<String> result2 = bq.documentBooleanQuery(this.PreprocessQuery(text.trim()));
+        long start = System.currentTimeMillis();
+        String query = this.PreprocessQuery(text.trim());
         
         PrecisionRecallCalculator calculator = new PrecisionRecallCalculator("asd", 7);
         SearchResults search = new SearchResults(result2,7);
@@ -63,41 +64,47 @@ public class FXMLDocumentController implements Initializable {
         calculator.calculateAveragePrecision();
         int sasd = calculator.getRelevantDocumentsFound();
         
-        this.ListViewResult.getItems().clear();
-        String text = this.TextFieldQuery.getText();
-        System.out.println("you searched: "+text);
-        System.out.println("Dictionary size: "+this.dictionary.size());
-        
-        long start = System.currentTimeMillis();
-        String query = Preprocessor.preProcess(text);
-        ArrayList<String> result = this.dictionary.get(query.trim());
-
         System.out.println("query = "+query);
-        if(result==null){
+        if(result2==null){
             System.out.println("warning result null");
             this.LabelProcessingTime.setText("Tidak ada hasil");
             return;
         }
         long end = System.currentTimeMillis();
         
-        ObservableList<String> test = FXCollections.<String>observableArrayList(result);
+        ObservableList<String> test = FXCollections.<String>observableArrayList(result2);
         this.ListViewResult.getItems().addAll(test);
-        this.LabelProcessingTime.setText("Menampilkan "+result.size()+" hasil("+(end-start)/100+" detik)");
+        this.LabelProcessingTime.setText("Menampilkan "+result2.size()+" hasil("+(end-start)*1.0/1000*1.0+" detik)");
+    }
+    
+    private String PreprocessQuery(String query){
+        String output="";
+        String[] words = query.split(" ");
+        for(String word: words){
+            if(word.equals("and")||word.equals("or")||word.equals("not")){
+                output += " "+word;           
+            }else{
+                output += " "+Preprocessor.preProcess(word);
+            }
+        }
+        return output.trim();
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        String dir="raw_dataset";
-        String outDir="preprocessed_dataset";
-        
-        File f =new File(dir);
-        File fout=new File(outDir);
-        //Preprocessor.preProcess(f, fout);
         long start = System.currentTimeMillis();
-        this.dictionary = Preprocessor.createDictionary(MyUtils.listFilesForFolder(f));
+        Preprocessor.init();
+        try{
+            ObjectInputStream oi = new ObjectInputStream(new GZIPInputStream(new FileInputStream("inverted_index.dat")));
+            this.dictionary  = ( TreeMap<String, ArrayList<String>>) oi.readObject();
+            this.bq = new BooleanQuery(this.dictionary);
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }catch(ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
         long end = System.currentTimeMillis();
-        System.out.println("Creating dictionary takes: "+(end-start));
+        System.out.println("Creating dictionary +initialization takes: "+(end-start)*1.0/1000*1.0+" detik");
     }    
    
 }

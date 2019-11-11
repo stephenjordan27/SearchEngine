@@ -19,15 +19,13 @@ import java.util.TreeMap;
  */
 public class BooleanQuery {
     private static TreeMap<String,ArrayList<String>> dictionary;
-    private String query;
     
-    public BooleanQuery(TreeMap<String,ArrayList<String>> dictionary,String query) {
+    public BooleanQuery(TreeMap<String,ArrayList<String>> dictionary) {
         this.dictionary = dictionary;
-        this.query = query;
     }
     
-    public ArrayList<String> documentBooleanQuery(){
-        List<Integer> vector = this.ProcessBooleanQuery();
+    public ArrayList<String> documentBooleanQuery(String query){
+        List<Integer> vector = this.ProcessBooleanQuery(query);
         ArrayList<String> result = new ArrayList<String>();
         for (int i = 0; i < vector.size(); i++) {
             if(vector.get(i)==1){
@@ -47,7 +45,7 @@ public class BooleanQuery {
         
     }
     
-    public List<Integer> ProcessBooleanQuery() {
+    public List<Integer> ProcessBooleanQuery(String query) {
         String[] queryTerm = query.toLowerCase().split(" ");
         List<Integer> operands = null;
         String operator = "";
