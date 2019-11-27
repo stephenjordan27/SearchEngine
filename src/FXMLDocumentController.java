@@ -30,11 +30,12 @@ public class FXMLDocumentController implements Initializable {
     
     private TreeMap<String,ArrayList<String>> dictionary;
     private BooleanQuery bq;
+    private boolean isAnd = false,defaultMode=true;
     @FXML
     private Label label,LabelProcessingTime;
     
     @FXML 
-    private Button BtnSearch;
+    private Button BtnSearch,btnAnd,btnOr,btnResetQuery;
     
     @FXML
     private TextField TextFieldQuery;
@@ -48,12 +49,51 @@ public class FXMLDocumentController implements Initializable {
         label.setText("Hello World!");
     }
     
+    @FXML
+    private void handleORButton(ActionEvent event){
+        this.isAnd =false;
+        this.defaultMode = false;
+        String text = this.TextFieldQuery.getText();
+        text = this.addBooleanOperators(text, isAnd);
+        this.TextFieldQuery.setText(text);
+    }
+    
+    @FXML
+    private void handleANDButton(ActionEvent event){
+        this.isAnd = true;
+        this.defaultMode =false;
+        String text = this.TextFieldQuery.getText();
+        text = this.addBooleanOperators(text, isAnd);
+        this.TextFieldQuery.setText(text);
+    }
+    
+    @FXML
+    private void handleTextFieldQuery(ActionEvent event){
+        this.LabelProcessingTime.setText("");
+    }
+    
+    @FXML
+    private void handleResetButton(ActionEvent event){
+        String text = this.TextFieldQuery.getText();
+        text = text.replaceAll(" and "," ");
+        text = text.replaceAll(" or "," ");
+        this.TextFieldQuery.setText(text);
+        this.defaultMode = true;
+    }
+    
     //References: https://examples.javacodegeeks.com/desktop-java/javafx/listview-javafx/javafx-listview-example/
     @FXML
     private void handleSearchButton(ActionEvent event){
         //Hasil boolean query : resul        
         this.ListViewResult.getItems().clear();
         String text = this.TextFieldQuery.getText();
+        if(this.defaultMode){
+            text = this.addBooleanOperators(text, false);
+        }
+        if(text.length()==0){
+            this.LabelProcessingTime.setText("Error! query tidak boleh kosong!");
+            return;
+        }
         ArrayList<String> result2 = bq.documentBooleanQuery(this.PreprocessQuery(text.trim()));
         long start = System.currentTimeMillis();
         String query = this.PreprocessQuery(text.trim());
@@ -75,6 +115,18 @@ public class FXMLDocumentController implements Initializable {
         ObservableList<String> test = FXCollections.<String>observableArrayList(result2);
         this.ListViewResult.getItems().addAll(test);
         this.LabelProcessingTime.setText("Menampilkan "+result2.size()+" hasil("+(end-start)*1.0/1000*1.0+" detik)");
+        this.defaultMode = true;
+    }
+    
+    private String addBooleanOperators(String input, boolean isAnd){
+        String output="";
+        input = input.trim();
+        if(isAnd){
+            output = input.replaceAll(" ", " and ");
+        }else{
+            output = input.replaceAll(" ", " or ");
+        }
+        return output;
     }
     
     private String PreprocessQuery(String query){
@@ -84,7 +136,7 @@ public class FXMLDocumentController implements Initializable {
             if(word.equals("and")||word.equals("or")||word.equals("not")){
                 output += " "+word;           
             }else{
-                output += " "+Preprocessor.preProcess(word);
+                output += " "+Preprocessor.preProcess(word).trim();
             }
         }
         return output.trim();

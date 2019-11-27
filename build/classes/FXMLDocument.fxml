@@ -9,31 +9,51 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="486.0" prefWidth="588.0" style="-fx-background-color: rgb(255,255,255);" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="570.0" prefWidth="589.0" style="-fx-background-color: rgb(255,255,255);" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLDocumentController">
     <children>
-      <Pane layoutX="1.0" prefHeight="143.0" prefWidth="588.0" style="-fx-background-color: rgb(87, 202, 255);">
+      <Pane layoutX="1.0" prefHeight="186.0" prefWidth="588.0" style="-fx-background-color: rgb(87, 202, 255);">
          <children>
             <Label layoutX="66.0" layoutY="22.0" prefHeight="57.0" prefWidth="287.0" text="Our Search Engine" textFill="WHITE">
                <font>
                   <Font name="Baloo" size="34.0" />
                </font>
             </Label>
-            <RadioButton fx:id="RadioBtnTop5" layoutX="66.0" layoutY="121.0" mnemonicParsing="false" text="Show Top 5">
+            <RadioButton fx:id="RadioBtnTop5" layoutX="353.0" layoutY="149.0" mnemonicParsing="false" text="Show Top 5" />
+            <RadioButton fx:id="RadioBtnTop10" layoutX="456.0" layoutY="149.0" mnemonicParsing="false" text="Show Top 10" />
+            <Label fx:id="label1" layoutX="66.0" layoutY="125.0" minHeight="16" minWidth="69" text="Boolean Query">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
-            </RadioButton>
-            <RadioButton fx:id="RadioBtnTop10" layoutX="171.0" layoutY="121.0" mnemonicParsing="false" text="Show Top 10" />
+            </Label>
+            <Button fx:id="btnAnd" layoutX="66.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleANDButton" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: rgb(14, 47, 86);" text="AND" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnOr" layoutX="157.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleORButton" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: rgb(14, 47, 86);" text="OR" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Label fx:id="label11" layoutX="353.0" layoutY="125.0" minHeight="16" minWidth="69" text="Rank Results">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnResetQuery" layoutX="250.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleResetButton" style="-fx-background-color: rgb(255, 0, 0);" text="RESET" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
          </children></Pane>
-        <Button fx:id="button" layoutX="26.0" layoutY="447.0" onAction="#handleButtonAction" text="Click Me!" />
-        <Label fx:id="label" layoutX="101.0" layoutY="451.0" minHeight="16" minWidth="69" />
-      <Button fx:id="BtnSearch" layoutX="443.0" layoutY="85.0" onAction="#handleSearchButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SEARCH" textFill="WHITE">
+        <Button fx:id="button" layoutX="18.0" layoutY="518.0" onAction="#handleButtonAction" text="Click Me!" />
+      <Button fx:id="BtnSearch" layoutX="443.0" layoutY="85.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SEARCH" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
       <TextField fx:id="TextFieldQuery" layoutX="69.0" layoutY="85.0" prefHeight="25.0" prefWidth="362.0" />
-      <ListView fx:id="ListViewResult" layoutX="69.0" layoutY="184.0" prefHeight="253.0" prefWidth="489.0" />
-      <Label fx:id="LabelProcessingTime" layoutX="69.0" layoutY="155.0" text="Label" />
+      <ListView fx:id="ListViewResult" layoutX="51.0" layoutY="219.0" prefHeight="284.0" prefWidth="489.0" />
+      <Label fx:id="LabelProcessingTime" layoutX="69.0" layoutY="194.0" text="Label" />
     </children>
 </AnchorPane>
