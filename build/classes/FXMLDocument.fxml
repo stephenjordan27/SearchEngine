@@ -53,7 +53,7 @@
          </font>
       </Button>
       <TextField fx:id="TextFieldQuery" layoutX="69.0" layoutY="85.0" prefHeight="25.0" prefWidth="362.0" />
-      <ListView fx:id="ListViewResult" layoutX="51.0" layoutY="219.0" prefHeight="284.0" prefWidth="489.0" />
+      <ListView fx:id="ListViewResult" layoutX="51.0" layoutY="219.0" onMouseClicked="#handleListViewClick" prefHeight="284.0" prefWidth="489.0" />
       <Label fx:id="LabelProcessingTime" layoutX="69.0" layoutY="194.0" text="Label" />
     </children>
 </AnchorPane>
