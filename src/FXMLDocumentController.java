@@ -30,6 +30,9 @@ public class FXMLDocumentController implements Initializable {
     
     private TreeMap<String,ArrayList<String>> dictionary;
     private BooleanQuery bq;
+    private BM25 bm;
+    private int[][] bagOfWords;
+    private LanguageModel lm;
     @FXML
     private Label label,LabelProcessingTime;
     
@@ -50,7 +53,7 @@ public class FXMLDocumentController implements Initializable {
     
     //References: https://examples.javacodegeeks.com/desktop-java/javafx/listview-javafx/javafx-listview-example/
     @FXML
-    private void handleSearchButton(ActionEvent event){
+    private void handleSearchButton(ActionEvent event) throws IOException{
         //Hasil boolean query : resul        
         this.ListViewResult.getItems().clear();
         String text = this.TextFieldQuery.getText();
@@ -64,13 +67,22 @@ public class FXMLDocumentController implements Initializable {
         calculator.calculateAveragePrecision();
         int sasd = calculator.getRelevantDocumentsFound();
         
-        System.out.println("query = "+query);
         if(result2==null){
             System.out.println("warning result null");
             this.LabelProcessingTime.setText("Tidak ada hasil");
             return;
         }
         long end = System.currentTimeMillis();
+        
+        this.lm.setQuery(query);
+        double[] ranking = this.lm.calculateRanking();
+        
+        System.out.println("query = "+query);
+        for(int i=0;i<ranking.length;i++)
+        {
+            System.out.println(ranking[i]);
+        }
+        this.lm.clear();
         
         ObservableList<String> test = FXCollections.<String>observableArrayList(result2);
         this.ListViewResult.getItems().addAll(test);
@@ -98,6 +110,9 @@ public class FXMLDocumentController implements Initializable {
             ObjectInputStream oi = new ObjectInputStream(new GZIPInputStream(new FileInputStream("inverted_index.dat")));
             this.dictionary  = ( TreeMap<String, ArrayList<String>>) oi.readObject();
             this.bq = new BooleanQuery(this.dictionary);
+            this.bm = new BM25(this.dictionary);
+            this.bagOfWords = this.bm.initiateBagOfWords();
+            this.lm = new LanguageModel(this.dictionary);
         }catch(IOException ex){
             ex.printStackTrace();
         }catch(ClassNotFoundException ex){
@@ -106,5 +121,8 @@ public class FXMLDocumentController implements Initializable {
         long end = System.currentTimeMillis();
         System.out.println("Creating dictionary +initialization takes: "+(end-start)*1.0/1000*1.0+" detik");
     }    
-   
+
+    public TreeMap<String, ArrayList<String>> getDictionary() {
+        return dictionary;
+    }
 }
