@@ -46,7 +46,6 @@
                </font>
             </Button>
          </children></Pane>
-        <Button fx:id="button" layoutX="18.0" layoutY="518.0" onAction="#handleButtonAction" text="Click Me!" />
       <Button fx:id="BtnSearch" layoutX="443.0" layoutY="85.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SEARCH" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
