@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
@@ -132,21 +133,35 @@ public class FXMLDocumentController implements Initializable {
     //References: https://examples.javacodegeeks.com/desktop-java/javafx/listview-javafx/javafx-listview-example/
     @FXML
     private void handleSearchButton(ActionEvent event) throws IOException{
-        //Hasil boolean query : resul        
+        //Hasil boolean query : resul 
+        long start = System.currentTimeMillis();
+        
+        //kosongkan list hasil pencarian, agar tidak saling tumpang tindih
         this.ListViewResult.getItems().clear();
+        
+        //dapatkan query user
         String text = this.TextFieldQuery.getText();
+        
+        //default mode or
         if(this.defaultMode){
             text = this.addBooleanOperators(text, false);
         }
+        
+        //periksa apakah query kosong atau tidak
         if(text.length()==0){
             this.LabelProcessingTime.setText("Error! query tidak boleh kosong!");
             return;
         }
+        
+        //cari dokumen yang mengandung term-term yang dicari
         ArrayList<String> result2 = bq.documentBooleanQuery(this.PreprocessQuery(text.trim()));
+        
+        //hitung cosine similarity pada dokumen hasil pencarian(?)
         CosineSimilarityResult[] cosineSimilarity = this.cs.ranking(text);
-        long start = System.currentTimeMillis();
+        
         String query = this.PreprocessQuery(text.trim());
         
+        //hitung precision recall
         PrecisionRecallCalculator calculator = new PrecisionRecallCalculator("asd", 7);
         SearchResults search = new SearchResults(result2,7);
         calculator.calculate(search);
@@ -158,20 +173,24 @@ public class FXMLDocumentController implements Initializable {
             this.LabelProcessingTime.setText("Tidak ada hasil");
             return;
         }
-        long end = System.currentTimeMillis();
         
-        this.lm.setQuery(query);
-        double[] ranking = this.lm.calculateRanking();
+        //language model
+        this.lm.setQuery(Preprocessor.preProcess(text));
+        double[] ranking = this.lm.calculateRanking(result2);
         
+        TreeMap<Double,String> rank = this.lm.calculateRankingHashMap(result2);
         System.out.println("query = "+query);
         for(int i=0;i<ranking.length;i++)
         {
             System.out.println(ranking[i]);
         }
-        this.lm.clear();
+        long end = System.currentTimeMillis();
         
+        //tampilkan hasil ke layar
         ObservableList<String> test = FXCollections.<String>observableArrayList(result2);
         this.ListViewResult.getItems().addAll(test);
+        
+        //tampilkan waktu yang dibutuhkan untuk memproses query
         this.LabelProcessingTime.setText("Menampilkan "+result2.size()+" hasil("+(end-start)*1.0/1000*1.0+" detik)");
         this.defaultMode = true;
     }
@@ -203,15 +222,24 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         long start = System.currentTimeMillis();
+        
+        //siapkan preprocessor
         Preprocessor.init();
         try{
             ObjectInputStream oi = new ObjectInputStream(new GZIPInputStream(new FileInputStream("inverted_index.dat")));
+            
+            //baca inverted index dari file
             this.dictionary  = ( TreeMap<String, ArrayList<String>>) oi.readObject();
+            
+            //siapkan boolean query
             this.bq = new BooleanQuery(this.dictionary);
+            
+            //siapkan cosine similarity
             this.cs = new CosineSimilarity(154, dictionary);
             this.cs.initialize();
             
-            this.lm = new LanguageModel(this.dictionary);
+            //siapkan language model
+            this.lm = new LanguageModel();
         }catch(IOException ex){
             ex.printStackTrace();
         }catch(ClassNotFoundException ex){
@@ -220,8 +248,4 @@ public class FXMLDocumentController implements Initializable {
         long end = System.currentTimeMillis();
         System.out.println("Creating dictionary +initialization takes: "+(end-start)*1.0/1000*1.0+" detik");
     }    
-
-    public TreeMap<String, ArrayList<String>> getDictionary() {
-        return dictionary;
-    }
 }

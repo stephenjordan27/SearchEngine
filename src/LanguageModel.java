@@ -15,23 +15,16 @@ import java.util.TreeMap;
 
 /**
  *
- * @author asus a455l
+ * @author Frengki Ang(Kontributor Utama), dengan beberapa penyesuaian oleh Irvan H
  */
 public class LanguageModel 
 {
-    private TreeMap<String,ArrayList<String>> dictionary; 
     private String query;
-    private ArrayList<String> tempListDocs;
-    private ArrayList<String> listDocs;
     private double lamda;
-    private int totalDocsWords;
     private String direktori;
     
-    public LanguageModel(TreeMap<String,ArrayList<String>> dictionary)
+    public LanguageModel()
     {
-        this.dictionary = dictionary;
-        this.listDocs = new ArrayList<String>();
-        this.tempListDocs = new ArrayList<String>();
         this.lamda = 0.25;
         this.direktori = "cleaned_dataset";
     }
@@ -41,29 +34,37 @@ public class LanguageModel
         this.query = q;
     }
     
-    public double[] calculateRanking() throws FileNotFoundException, IOException
+    public TreeMap<Double,String> calculateRankingHashMap(ArrayList<String> listDocs) throws FileNotFoundException, IOException{
+        TreeMap<Double,String> ranking = new TreeMap<>();
+        double[] rank = this.calculateRanking(listDocs);
+        for(int i = 0;i < rank.length;i++){
+            ranking.put(rank[i],listDocs.get(i));
+        }
+        return ranking;
+    }
+    
+    public double[] calculateRanking(ArrayList<String> listDocs) throws FileNotFoundException, IOException
     {
         String[] wordQuery = this.query.split("\\s+");
         double[] equation = new double[wordQuery.length];
-        
-        cariDocYangMemilikiKataQuery();
-        double[] ranking = new double[this.listDocs.size()];
+        int totalDocsWords=0;
+        double[] ranking = new double[listDocs.size()];
         for(int i=0;i<ranking.length;i++)
         {
             ranking[i] = 1;
         }
         
         //hitung total kata semua doc
-        for(int i=0;i<this.listDocs.size();i++)
+        for(int i=0;i<listDocs.size();i++)
         {
-            String fileName = this.listDocs.get(i);
+            String fileName = listDocs.get(i);
             File file = new File(direktori + "\\" + fileName);
-            this.totalDocsWords += hitungKataDoc(fileName);
+            totalDocsWords += hitungKataDoc(fileName);
         }
         
-        for(int j=0;j<this.listDocs.size();j++)
+        for(int j=0;j<listDocs.size();j++)
         {
-            String fileName = this.listDocs.get(j);
+            String fileName = listDocs.get(j);
             double jumlahKataQueryDiDocYangDiBanding = 0;
             double jumlahKataQueryDiDoc = 0;
             double jumlahKataQueryDiSemuaDoc = 0;
@@ -73,15 +74,16 @@ public class LanguageModel
                 jumlahKataQueryDiDocYangDiBanding = hitungHitKataQueryDiDoc(fileName, wordQuery[i]);
                 jumlahKataDoc = hitungKataDoc(fileName);
                 jumlahKataQueryDiSemuaDoc += jumlahKataQueryDiDocYangDiBanding;
-                for(int k=0;k<this.listDocs.size();k++)
+                for(int k=0;k<listDocs.size();k++)
                 {
                     if(k!=j)
                     {
+                        fileName = listDocs.get(k);
                         jumlahKataQueryDiDoc = hitungHitKataQueryDiDoc(fileName, wordQuery[i]);
                         jumlahKataQueryDiSemuaDoc += jumlahKataQueryDiDoc;
                     }
                 }
-                equation[i] = (lamda * jumlahKataQueryDiDocYangDiBanding/jumlahKataDoc) + ((1-lamda) * jumlahKataQueryDiSemuaDoc/(double)this.totalDocsWords);
+                equation[i] = (lamda * jumlahKataQueryDiDocYangDiBanding/jumlahKataDoc) + ((1-lamda) * jumlahKataQueryDiSemuaDoc/(double)totalDocsWords);
             }  
             for(int i=0;i<equation.length;i++)
             {
@@ -90,24 +92,6 @@ public class LanguageModel
         }
         
         return ranking;
-    }
-    
-    public void clear()
-    {
-        this.listDocs.clear();
-    }
-    
-    public void cariDocYangMemilikiKataQuery()
-    {
-        String[] wordQuery = this.query.split("\\s+");
-        for(int i = 0;i<wordQuery.length;i++)
-        {
-            this.tempListDocs = this.dictionary.get(wordQuery[i]);
-            for(int j=0;j<this.tempListDocs.size();j++)
-            {
-                this.listDocs.add(this.tempListDocs.get(j));
-            }
-        }
     }
     
     public int hitungKataDoc(String namaFile) throws FileNotFoundException, IOException
