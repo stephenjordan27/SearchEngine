@@ -30,6 +30,8 @@ public class FXMLDocumentController implements Initializable {
     
     private TreeMap<String,ArrayList<String>> dictionary;
     private BooleanQuery bq;
+    private CosineSimilarity cs;
+    
     @FXML
     private Label label,LabelProcessingTime;
     
@@ -55,6 +57,7 @@ public class FXMLDocumentController implements Initializable {
         this.ListViewResult.getItems().clear();
         String text = this.TextFieldQuery.getText();
         ArrayList<String> result2 = bq.documentBooleanQuery(this.PreprocessQuery(text.trim()));
+        CosineSimilarityResult[] cosineSimilarity = this.cs.ranking(text);
         long start = System.currentTimeMillis();
         String query = this.PreprocessQuery(text.trim());
         
@@ -98,6 +101,9 @@ public class FXMLDocumentController implements Initializable {
             ObjectInputStream oi = new ObjectInputStream(new GZIPInputStream(new FileInputStream("inverted_index.dat")));
             this.dictionary  = ( TreeMap<String, ArrayList<String>>) oi.readObject();
             this.bq = new BooleanQuery(this.dictionary);
+            this.cs = new CosineSimilarity(154, dictionary);
+            this.cs.initialize();
+            
         }catch(IOException ex){
             ex.printStackTrace();
         }catch(ClassNotFoundException ex){

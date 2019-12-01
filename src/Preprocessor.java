@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
