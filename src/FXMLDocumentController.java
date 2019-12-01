@@ -13,7 +13,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
@@ -27,6 +30,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -42,11 +47,20 @@ public class FXMLDocumentController implements Initializable {
     private TreeMap<String,ArrayList<String>> dictionary;
     private BooleanQuery bq;
     private CosineSimilarity cs;
+    private CosineSimilarityResult[] cosineSimilarity;
+    private ArrayList<String> resultLM;
+    private long startCS = 0, endCS = 0, startLM = 0, endLM = 0;
+    private BM25 bm25;
     
     private LanguageModel lm;
     private boolean isAnd = false,defaultMode=true;
+    
+    private ToggleGroup rankingMethod;
     @FXML
     private Label label,LabelProcessingTime;
+    
+    @FXML
+    private RadioButton RadioBtnTop5,RadioBtnTop10,radioButtonCS,radioButtonLM,radioButtonBM25;
     
     @FXML 
     private Button BtnSearch,btnAnd,btnOr,btnResetQuery;
@@ -64,8 +78,48 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
+    private void handleCSRadioButton(MouseEvent event){
+       this.showCS();
+    }
+    
+    private void showCS(){
+         this.ListViewResult.getItems().clear();
+            
+            System.out.println("Metode yang dipilih: Cosine Similarity");
+            ArrayList<String> resultCS =new ArrayList();
+            for(CosineSimilarityResult res: this.cosineSimilarity){
+                resultCS.add(res.getNoDocument()+"\t"+"Doc"+String.format("%03d",res.getNoDocument())+".txt");
+            }
+            
+        ObservableList<String> test = FXCollections.<String>observableArrayList(resultCS);
+        this.ListViewResult.getItems().addAll(test);
+        this.LabelProcessingTime.setText("Menampilkan "+resultCS.size()+" hasil dengan ranking Cosine Similarity ("+(this.endCS-this.startCS)*1.0/1000*1.0+" detik)");
+        this.defaultMode = true;
+    }
+    
+    @FXML
+    private void handleLMRadioButton(MouseEvent event){
+         //kosongkan list hasil pencarian, agar tidak saling tumpang tindih
+        this.ListViewResult.getItems().clear();
+            
+        System.out.println("Metode yang dipilih: Language Model");
+            
+            
+        ObservableList<String> test = FXCollections.<String>observableArrayList(this.resultLM);
+        this.ListViewResult.getItems().addAll(test);
+        this.LabelProcessingTime.setText("Menampilkan "+this.resultLM.size()+" hasil dengan ranking Language Model ("+(endLM-startLM)*1.0/1000*1.0+" detik)");
+        this.defaultMode = true;
+    }
+    
+    @FXML
+    private void handleBM25RadioButton(MouseEvent event){
+    
+    }
+    
+    @FXML
     private void handleListViewClick(MouseEvent event){
-        String name = (String)this.ListViewResult.getSelectionModel().getSelectedItem();
+        String[] row= ((String)this.ListViewResult.getSelectionModel().getSelectedItem()).split("\t");
+        String name = row[1];
         //baca file nya
         
         String line="";
@@ -136,9 +190,6 @@ public class FXMLDocumentController implements Initializable {
         //Hasil boolean query : resul 
         long start = System.currentTimeMillis();
         
-        //kosongkan list hasil pencarian, agar tidak saling tumpang tindih
-        this.ListViewResult.getItems().clear();
-        
         //dapatkan query user
         String text = this.TextFieldQuery.getText();
         
@@ -153,12 +204,15 @@ public class FXMLDocumentController implements Initializable {
             return;
         }
         
+        String cleanQuery = Preprocessor.preProcess(text);
         //cari dokumen yang mengandung term-term yang dicari
         ArrayList<String> result2 = bq.documentBooleanQuery(this.PreprocessQuery(text.trim()));
         
         //hitung cosine similarity pada dokumen hasil pencarian(?)
-        CosineSimilarityResult[] cosineSimilarity = this.cs.ranking(text);
-        
+        this.startCS = System.currentTimeMillis();
+        CosineSimilarityResult[] cosineSimilarity = this.cs.ranking(cleanQuery);
+        this.endCS = System.currentTimeMillis();
+        Arrays.sort(cosineSimilarity);
         String query = this.PreprocessQuery(text.trim());
         
         //hitung precision recall
@@ -175,23 +229,38 @@ public class FXMLDocumentController implements Initializable {
         }
         
         //language model
-        this.lm.setQuery(Preprocessor.preProcess(text));
+        this.lm.setQuery(cleanQuery);
         double[] ranking = this.lm.calculateRanking(result2);
         
+        this.startLM = System.currentTimeMillis();
         TreeMap<Double,String> rank = this.lm.calculateRankingHashMap(result2);
-        System.out.println("query = "+query);
-        for(int i=0;i<ranking.length;i++)
-        {
-            System.out.println(ranking[i]);
+        this.endLM = System.currentTimeMillis();
+        
+        System.out.println("query = "+query);  
+//        for(int i=0;i<ranking.length;i++)
+//        {
+//            System.out.println(ranking[i]);
+//        }
+//        long end = System.currentTimeMillis();
+        
+         //BM-25
+         long startBM25= System.currentTimeMillis();
+         
+         long endBM25 = System.currentTimeMillis();
+         
+        this.cosineSimilarity = cosineSimilarity;
+        
+        this.resultLM = new ArrayList();
+        ArrayList<String> resultLM = new ArrayList();
+            
+        Iterator it = rank.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            resultLM.add(String.format("%.7f",pair.getKey()) + "\t" + pair.getValue());
+            it.remove(); // avoids a ConcurrentModificationException
         }
-        long end = System.currentTimeMillis();
-        
-        //tampilkan hasil ke layar
-        ObservableList<String> test = FXCollections.<String>observableArrayList(result2);
-        this.ListViewResult.getItems().addAll(test);
-        
-        //tampilkan waktu yang dibutuhkan untuk memproses query
-        this.LabelProcessingTime.setText("Menampilkan "+result2.size()+" hasil("+(end-start)*1.0/1000*1.0+" detik)");
+        this.resultLM = resultLM;   
+        this.showCS();
         this.defaultMode = true;
     }
     
@@ -221,8 +290,17 @@ public class FXMLDocumentController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ToggleGroup tg = new ToggleGroup();
+        this.RadioBtnTop10.setToggleGroup(tg);
+        this.RadioBtnTop5.setToggleGroup(tg);
         long start = System.currentTimeMillis();
         
+        this.rankingMethod =new ToggleGroup();
+        this.radioButtonCS.setToggleGroup(this.rankingMethod);
+        this.radioButtonLM.setToggleGroup(this.rankingMethod);
+        this.radioButtonBM25.setToggleGroup(this.rankingMethod);
+        
+        this.radioButtonCS.setSelected(true);
         //siapkan preprocessor
         Preprocessor.init();
         try{
@@ -240,6 +318,8 @@ public class FXMLDocumentController implements Initializable {
             
             //siapkan language model
             this.lm = new LanguageModel();
+            
+            this.bm25 = new BM25(dictionary);
         }catch(IOException ex){
             ex.printStackTrace();
         }catch(ClassNotFoundException ex){
