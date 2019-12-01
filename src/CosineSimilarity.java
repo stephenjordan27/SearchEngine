@@ -123,12 +123,11 @@ public class CosineSimilarity {
         for(Map.Entry<String,ArrayList<String>> entry : dictionary.entrySet()) {
             String key = entry.getKey();
             int value = 0;
-            if(i < arrOfWord.length && key.equalsIgnoreCase(arrOfWord[i])){
-                value = 1;
-                i++;
-            }
-            else{
-                value = 0;
+            for(String word:arrOfWord){
+                if(key.equalsIgnoreCase(word)){
+                    value = 1;
+                    break;
+                }
             }
             tf_query.put(key, value);
          }
@@ -228,11 +227,19 @@ public class CosineSimilarity {
 }
 
 class CosineSimilarityResult implements Comparable<CosineSimilarityResult>{
-    private int noDocument;
+    private String documentName;
     private double result;
 
-    public CosineSimilarityResult(int noDocument, double result) {
-        this.noDocument = noDocument;
+    public CosineSimilarityResult(int documentNumber, double result) {
+        if(documentNumber<=9){
+            this.documentName = "Doc00"+documentNumber+".txt";
+        }
+        else if(documentNumber<=99){
+            this.documentName = "Doc0"+documentNumber+".txt";
+        }
+        else{
+            this.documentName = "Doc"+documentNumber+".txt";
+        }
         this.result = result;
     }
 
