@@ -88,7 +88,7 @@ public class FXMLDocumentController implements Initializable {
             System.out.println("Metode yang dipilih: Cosine Similarity");
             ArrayList<String> resultCS =new ArrayList();
             for(CosineSimilarityResult res: this.cosineSimilarity){
-                resultCS.add(res.getNoDocument()+"\t"+"Doc"+String.format("%03d",res.getNoDocument())+".txt");
+                resultCS.add(res.getDocumentName()+"\t"+"Doc"+String.format("%03d",res.getDocumentName())+".txt");
             }
             
         ObservableList<String> test = FXCollections.<String>observableArrayList(resultCS);
