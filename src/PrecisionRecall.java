@@ -18,12 +18,13 @@ import java.util.List;
  * @author asus
  */
 public class PrecisionRecall {
-        private ArrayList<String> displayResult,goldenAnswer;
+        private ArrayList<String> displayResult;
+        private String[] goldenAnswer;
         private int tp,fp,fn,tn,sumOfDocument;
 
 	String name;
 
-	public PrecisionRecall(int sumOfDocument,ArrayList<String> displayResult, ArrayList<String> goldenAnswer) {
+	public PrecisionRecall(int sumOfDocument,String[] goldenAnswer, ArrayList<String> displayResult) {
             this.sumOfDocument = sumOfDocument;
             this.displayResult = displayResult;
             this.goldenAnswer = goldenAnswer;
@@ -77,11 +78,29 @@ public class PrecisionRecall {
         }
 
 	public double precision() {															//
-            return tp / (tp + fp);
+            return tp * 1.0 / (tp + fp);
 	}  
         
         public double recall() {															//
-            return tp / (tp + fn);
+            return tp *1.0 / (tp + fn);
 	}  
+
+    public int getFn() {
+        return fn;
+    }
+
+    public int getFp() {
+        return fp;
+    }
+
+    public int getTn() {
+        return tn;
+    }
+
+    public int getTp() {
+        return tp;
+    }
+        
+        
 
 }

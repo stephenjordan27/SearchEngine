@@ -13,9 +13,9 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="766.951171875" prefWidth="672.0" style="-fx-background-color: rgb(255,255,255);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="804.951171875" prefWidth="672.0" style="-fx-background-color: rgb(255,255,255);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="FXMLDocumentController">
   <children>
-    <Pane prefHeight="240.0" prefWidth="672.0" style="-fx-background-color: rgb(87, 202, 255);">
+    <Pane layoutX="0.0" layoutY="0.0" prefHeight="236.0" prefWidth="672.0" style="-fx-background-color: rgb(87, 202, 255);">
       <children>
         <Label layoutX="65.0" layoutY="22.0" prefHeight="57.0" prefWidth="287.0" text="Our Search Engine" textFill="WHITE">
           <font>
@@ -45,7 +45,7 @@
       </children>
     </Pane>
     <TextField fx:id="TextFieldQuery" layoutX="65.0" layoutY="85.0" prefHeight="26.0" prefWidth="418.0" />
-    <ListView fx:id="ListViewResult" layoutX="65.0" layoutY="254.0" onMouseClicked="#handleListViewClick" prefHeight="284.0" prefWidth="542.0" />
+    <ListView fx:id="ListViewResult" layoutX="65.0" layoutY="285.0" onMouseClicked="#handleListViewClick" prefHeight="253.0" prefWidth="542.0" />
     <Label fx:id="LabelProcessingTime" layoutX="69.0" layoutY="254.0" prefHeight="17.0" prefWidth="469.0" />
     <Label fx:id="label121" font="$x2" layoutX="65.0" layoutY="556.0" minHeight="16.0" minWidth="69.0" prefHeight="18.0" prefWidth="101.0" text="Golden Answer" />
     <TextField fx:id="TextFieldGoldenAnswer" layoutX="65.0" layoutY="581.0" prefHeight="26.0" prefWidth="418.0" />

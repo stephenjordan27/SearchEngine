@@ -1,5 +1,4 @@
 *.class
 *.jar
 dist
-cleaned_dataset
 build

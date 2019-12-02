@@ -84,15 +84,20 @@ public class FXMLDocumentController implements Initializable {
     }
     
     private void showCS(){
-        this.ListViewResult.getItems().clear(); 
-        System.out.println("Metode yang dipilih: Cosine Similarity");
-        ArrayList<String> resultCS =new ArrayList();
-        for(CosineSimilarityResult res: this.cosineSimilarity){
-            if(res.getResult()!=0.0)
-                resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
-        }
+         this.ListViewResult.getItems().clear();
             
-        ObservableList<String> test = FXCollections.<String>observableArrayList(resultCS);
+            System.out.println("Metode yang dipilih: Cosine Similarity");
+            ArrayList<String> resultCS =new ArrayList();
+            for(CosineSimilarityResult res: this.cosineSimilarity){
+                if(res.getResult()!=0.0)
+                    resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
+            }
+            ObservableList<String> test;
+        if(this.isTop5){
+            test = FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
+        }else{
+            test = FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
+        }
         this.ListViewResult.getItems().addAll(test);
         this.LabelProcessingTime.setText("Menampilkan "+resultCS.size()+" hasil dengan ranking Cosine Similarity ("+(this.endCS-this.startCS)*1.0/1000*1.0+" detik)");
         this.defaultMode = true;
@@ -104,9 +109,13 @@ public class FXMLDocumentController implements Initializable {
         this.ListViewResult.getItems().clear();
             
         System.out.println("Metode yang dipilih: Language Model");
-            
-            
-        ObservableList<String> test = FXCollections.<String>observableArrayList(this.resultLM);
+        
+        ObservableList<String> test;
+        if(this.isTop5){          
+        test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 5));
+        }else{
+             test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 10));
+        }
         this.ListViewResult.getItems().addAll(test);
         this.LabelProcessingTime.setText("Menampilkan "+this.resultLM.size()+" hasil dengan ranking Language Model ("+(endLM-startLM)*1.0/1000*1.0+" detik)");
         this.defaultMode = true;
@@ -120,11 +129,37 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleTop5RadioButton(MouseEvent event){
         this.isTop5=true;
+        this.ListViewResult.getItems().clear();
+        if(this.rankingMethod.getSelectedToggle().equals(this.radioButtonCS)){
+            ArrayList<String> resultCS =new ArrayList();
+            for(CosineSimilarityResult res: this.cosineSimilarity){
+                if(res.getResult()!=0.0)
+                    resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
+            }
+            ObservableList<String> test=FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
+            this.ListViewResult.getItems().addAll(test);
+        }else if(this.rankingMethod.getSelectedToggle().equals(this.radioButtonLM)){
+            ObservableList<String> test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 5));
+            this.ListViewResult.getItems().addAll(test);
+        }
     }
     
     @FXML
     private void handleTop10RadioButton(MouseEvent event){
-        this.isTop5 = false;
+        this.isTop5=false;
+        this.ListViewResult.getItems().clear();
+        if(this.rankingMethod.getSelectedToggle().equals(this.radioButtonCS)){
+            ArrayList<String> resultCS =new ArrayList();
+            for(CosineSimilarityResult res: this.cosineSimilarity){
+                if(res.getResult()!=0.0)
+                    resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
+            }
+            ObservableList<String> test=FXCollections.<String>observableArrayList(resultCS.subList(0, 10));
+            this.ListViewResult.getItems().addAll(test);
+        }else if(this.rankingMethod.getSelectedToggle().equals(this.radioButtonLM)){
+            ObservableList<String> test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 10));
+            this.ListViewResult.getItems().addAll(test);
+        }
     }
     @FXML
     private void handleListViewClick(MouseEvent event){
@@ -197,8 +232,22 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleSubmitButton(ActionEvent event){
         String text = this.TextFieldGoldenAnswer.getText();
-        String[] displayResult = text.split(" ");
-        Object obj = this.ListViewResult.getItems();
+        String[] goldenAnswer = text.split(" ");
+        ArrayList<String> displayResult = new ArrayList<String>();
+        ObservableList obj = this.ListViewResult.getItems();
+        for (int i = 0; i < obj.size(); i++) {
+            String[] queryResult = ((String) obj.get(i)).split("\t");
+            displayResult.add(queryResult[1]);
+            
+        }
+        PrecisionRecall pr = new PrecisionRecall(sumOfDocument, goldenAnswer, displayResult);
+        pr.generatePrecisionRecallVariable();
+        retrievedRelevant.setText(pr.getTp()+"");
+        retrievedNonRelevant.setText(pr.getFp()+"");
+        NotRetrievedRelevant.setText(pr.getFn()+"");
+        NotRetrievedNonRelevant.setText(pr.getTn()+"");
+        Precision.setText(pr.precision()+"");
+        Recall.setText(pr.recall()+"");
     }
     
     //References: https://examples.javacodegeeks.com/desktop-java/javafx/listview-javafx/javafx-listview-example/
