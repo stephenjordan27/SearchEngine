@@ -359,12 +359,12 @@ public class FXMLDocumentController implements Initializable {
         
         TreeMap<Double,String> rank = this.lm.calculateRankingHashMap();
         this.endLM = System.currentTimeMillis();
-
-        System.out.println("query = " + query);
-//        for(int i=0;i<ranking.length;i++)
-//        {
-//            System.out.println(ranking[i]);
-//        }
+        
+        System.out.println("query = "+query);  
+        for(int i=0;i<ranking.length;i++)
+        {
+            System.out.println(ranking[i]);
+        }
 //        long end = System.currentTimeMillis();
 
 
@@ -424,8 +424,8 @@ public class FXMLDocumentController implements Initializable {
 
         this.radioButtonCS.setSelected(true);
         //siapkan preprocessor
-        Preprocessor.init();
-        try {
+        //Preprocessor.init();
+        try{
             ObjectInputStream oi = new ObjectInputStream(new GZIPInputStream(new FileInputStream("inverted_index.dat")));
 
             //baca inverted index dari file
