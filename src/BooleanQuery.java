@@ -38,7 +38,6 @@ public class BooleanQuery {
                 else{
                     result.add("Doc"+(i+1)+".txt");
                 }
-                
             }
         }
         return result;

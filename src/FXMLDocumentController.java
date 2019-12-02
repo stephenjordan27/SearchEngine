@@ -51,22 +51,23 @@ public class FXMLDocumentController implements Initializable {
     private ArrayList<String> resultLM;
     private long startCS = 0, endCS = 0, startLM = 0, endLM = 0;
     private BM25 bm25;
+    private final int sumOfDocument = 154;
     
     private LanguageModel lm;
     private boolean isAnd = false,defaultMode=true,isTop5=true;
     
     private ToggleGroup rankingMethod;
     @FXML
-    private Label label,LabelProcessingTime;
+    private Label label,LabelProcessingTime,retrievedRelevant,retrievedNonRelevant,NotRetrievedRelevant,NotRetrievedNonRelevant,Precision,Recall;
     
     @FXML
     private RadioButton RadioBtnTop5,RadioBtnTop10,radioButtonCS,radioButtonLM,radioButtonBM25;
     
     @FXML 
-    private Button BtnSearch,btnAnd,btnOr,btnResetQuery;
+    private Button BtnSearch,BtnSubmit,btnAnd,btnOr,btnResetQuery;
     
     @FXML
-    private TextField TextFieldQuery;
+    private TextField TextFieldQuery,TextFieldGoldenAnswer;
     
     @FXML
     private ListView ListViewResult;
@@ -83,14 +84,13 @@ public class FXMLDocumentController implements Initializable {
     }
     
     private void showCS(){
-         this.ListViewResult.getItems().clear();
-            
-            System.out.println("Metode yang dipilih: Cosine Similarity");
-            ArrayList<String> resultCS =new ArrayList();
-//            for(CosineSimilarityResult res: this.cosineSimilarity){
-//                if(res.getResult()!=0.0)
-//                    resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
-//            }
+        this.ListViewResult.getItems().clear(); 
+        System.out.println("Metode yang dipilih: Cosine Similarity");
+        ArrayList<String> resultCS =new ArrayList();
+        for(CosineSimilarityResult res: this.cosineSimilarity){
+            if(res.getResult()!=0.0)
+                resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
+        }
             
         ObservableList<String> test = FXCollections.<String>observableArrayList(resultCS);
         this.ListViewResult.getItems().addAll(test);
@@ -194,6 +194,13 @@ public class FXMLDocumentController implements Initializable {
         this.defaultMode = true;
     }
     
+    @FXML
+    private void handleSubmitButton(ActionEvent event){
+        String text = this.TextFieldGoldenAnswer.getText();
+        String[] displayResult = text.split(" ");
+        Object obj = this.ListViewResult.getItems();
+    }
+    
     //References: https://examples.javacodegeeks.com/desktop-java/javafx/listview-javafx/javafx-listview-example/
     @FXML
     private void handleSearchButton(ActionEvent event) throws IOException{
@@ -224,13 +231,6 @@ public class FXMLDocumentController implements Initializable {
         this.endCS = System.currentTimeMillis();
         Arrays.sort(cosineSimilarity);
         String query = this.PreprocessQuery(text.trim());
-        
-        //hitung precision recall
-        PrecisionRecallCalculator calculator = new PrecisionRecallCalculator("asd", 7);
-        SearchResults search = new SearchResults(result2,7);
-        calculator.calculate(search);
-        calculator.calculateAveragePrecision();
-        int sasd = calculator.getRelevantDocumentsFound();
         
         if(result2==null){
             System.out.println("warning result null");

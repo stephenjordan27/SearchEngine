@@ -1,97 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="762.0" prefWidth="672.0" style="-fx-background-color: rgb(255,255,255);" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLDocumentController">
-    <children>
-      <Pane prefHeight="240.0" prefWidth="672.0" style="-fx-background-color: rgb(87, 202, 255);">
-         <children>
-            <Label layoutX="66.0" layoutY="22.0" prefHeight="57.0" prefWidth="287.0" text="Our Search Engine" textFill="WHITE">
-               <font>
-                  <Font name="Baloo" size="34.0" />
-               </font>
-            </Label>
-            <RadioButton fx:id="RadioBtnTop5" layoutX="353.0" layoutY="149.0" mnemonicParsing="false" onMouseClicked="#handleTop5RadioButton" text="Top 5" />
-            <RadioButton fx:id="RadioBtnTop10" layoutX="418.0" layoutY="149.0" mnemonicParsing="false" onMouseClicked="#handleTop10RadioButton" text="Top 10" />
-            <Label fx:id="label1" layoutX="66.0" layoutY="122.0" minHeight="16" minWidth="69" text="Boolean Query">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnAnd" layoutX="66.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleANDButton" prefHeight="25.0" prefWidth="72.0" style="-fx-background-color: rgb(14, 47, 86);" text="AND" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnOr" layoutX="149.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleORButton" prefHeight="25.0" prefWidth="72.0" style="-fx-background-color: rgb(14, 47, 86);" text="OR" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Label fx:id="label11" layoutX="353.0" layoutY="125.0" minHeight="16" minWidth="69" text="Rank Results">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnResetQuery" layoutX="232.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleResetButton" style="-fx-background-color: rgb(255, 0, 0);" text="RESET" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Label fx:id="label12" layoutX="66.0" layoutY="182.0" minHeight="16" minWidth="69" text="Ranking Method">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <RadioButton fx:id="radioButtonCS" layoutX="66.0" layoutY="204.0" mnemonicParsing="false" onMouseClicked="#handleCSRadioButton" text="Cosine Similarity" />
-            <RadioButton fx:id="radioButtonLM" layoutX="185.0" layoutY="204.0" mnemonicParsing="false" onMouseClicked="#handleLMRadioButton" text="Language Model" />
-            <RadioButton fx:id="radioButtonBM25" layoutX="315.0" layoutY="204.0" mnemonicParsing="false" onMouseClicked="#handleBM25RadioButton" text="BM-25" />
-            <Button fx:id="BtnSearch" layoutX="492.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SEARCH" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-         </children></Pane>
-      <TextField fx:id="TextFieldQuery" layoutX="65.0" layoutY="85.0" prefHeight="26.0" prefWidth="418.0" />
-      <ListView fx:id="ListViewResult" layoutX="65.0" layoutY="254.0" onMouseClicked="#handleListViewClick" prefHeight="284.0" prefWidth="542.0" />
-      <Label fx:id="LabelProcessingTime" layoutX="69.0" layoutY="254.0" prefHeight="17.0" prefWidth="469.0" />
-      <Label fx:id="label121" layoutX="65.0" layoutY="556.0" minHeight="16" minWidth="69" prefHeight="18.0" prefWidth="101.0" text="Golden Answer">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <TextField fx:id="TextFieldQuery1" layoutX="65.0" layoutY="581.0" prefHeight="26.0" prefWidth="418.0" />
-      <Button fx:id="BtnSearch1" layoutX="491.0" layoutY="581.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SUBMIT" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Label layoutX="65.0" layoutY="625.0" text="Retrieved and Relevant" />
-      <Label layoutX="65.0" layoutY="645.0" text="Retrieved and Non relevant" />
-      <Label layoutX="65.0" layoutY="665.0" text="Not retrieved and Relevant" />
-      <Label layoutX="65.0" layoutY="687.0" text="Not retrieved and Non relevant" />
-      <Label layoutX="380.0" layoutY="688.0" text="PRECISION" />
-      <Label layoutX="388.0" layoutY="601.0" text="0">
-         <font>
-            <Font size="74.0" />
-         </font>
-      </Label>
-      <Label layoutX="526.0" layoutY="601.0" text="0">
-         <font>
-            <Font size="74.0" />
-         </font>
-      </Label>
-      <Label layoutX="526.0" layoutY="688.0" text="RECALL" />
-      <Label layoutX="251.0" layoutY="625.0" text="0" />
-      <Label layoutX="251.0" layoutY="646.0" text="0" />
-      <Label layoutX="251.0" layoutY="666.0" text="0" />
-      <Label layoutX="251.0" layoutY="688.0" text="0" />
-    </children>
+<AnchorPane id="AnchorPane" prefHeight="766.951171875" prefWidth="672.0" style="-fx-background-color: rgb(255,255,255);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="FXMLDocumentController">
+  <children>
+    <Pane prefHeight="240.0" prefWidth="672.0" style="-fx-background-color: rgb(87, 202, 255);">
+      <children>
+        <Label layoutX="65.0" layoutY="22.0" prefHeight="57.0" prefWidth="287.0" text="Our Search Engine" textFill="WHITE">
+          <font>
+            <Font size="34.0" />
+          </font>
+        </Label>
+        <RadioButton fx:id="RadioBtnTop5" layoutX="360.0" layoutY="149.0" mnemonicParsing="false" onMouseClicked="#handleTop5RadioButton" text="Top 5" />
+        <RadioButton fx:id="RadioBtnTop10" layoutX="432.0" layoutY="149.0" mnemonicParsing="false" onMouseClicked="#handleTop10RadioButton" text="Top 10" />
+        <Label fx:id="label1" layoutX="66.0" layoutY="119.0" minHeight="16.0" minWidth="69.0" text="Boolean Query">
+          <font>
+            <Font name="System Bold" size="14.0" fx:id="x2" />
+          </font>
+        </Label>
+        <Button fx:id="btnAnd" layoutX="66.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleANDButton" prefHeight="25.0" prefWidth="55.0" style="-fx-background-color: rgb(14, 47, 86);" text="AND" textFill="WHITE">
+          <font>
+            <Font name="System Bold" size="12.0" fx:id="x1" />
+          </font>
+        </Button>
+        <Button fx:id="btnOr" font="$x1" layoutX="128.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleORButton" prefHeight="25.0" prefWidth="55.0" style="-fx-background-color: rgb(14, 47, 86);" text="OR" textFill="WHITE" />
+        <Label fx:id="label11" font="$x2" layoutX="360.0" layoutY="122.0" minHeight="16.0" minWidth="69.0" text="Ranking Category" />
+        <Button fx:id="btnResetQuery" font="$x1" layoutX="211.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleResetButton" prefHeight="26.0" style="-fx-background-color: rgb(255, 0, 0);" text="RESET" textFill="WHITE" />
+        <Label fx:id="label12" font="$x2" layoutX="66.0" layoutY="180.0" minHeight="16.0" minWidth="69.0" text="Ranking Feature" />
+        <RadioButton fx:id="radioButtonCS" layoutX="66.0" layoutY="205.0" mnemonicParsing="false" onMouseClicked="#handleCSRadioButton" text="Cosine Similarity" />
+        <RadioButton fx:id="radioButtonLM" layoutX="210.0" layoutY="206.0" mnemonicParsing="false" onMouseClicked="#handleLMRadioButton" text="Language Model" />
+        <RadioButton fx:id="radioButtonBM25" layoutX="359.0" layoutY="207.0" mnemonicParsing="false" onMouseClicked="#handleBM25RadioButton" text="BM-25" />
+        <Button fx:id="BtnSearch" font="$x1" layoutX="492.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SEARCH" textFill="WHITE" />
+      </children>
+    </Pane>
+    <TextField fx:id="TextFieldQuery" layoutX="65.0" layoutY="85.0" prefHeight="26.0" prefWidth="418.0" />
+    <ListView fx:id="ListViewResult" layoutX="65.0" layoutY="254.0" onMouseClicked="#handleListViewClick" prefHeight="284.0" prefWidth="542.0" />
+    <Label fx:id="LabelProcessingTime" layoutX="69.0" layoutY="254.0" prefHeight="17.0" prefWidth="469.0" />
+    <Label fx:id="label121" font="$x2" layoutX="65.0" layoutY="556.0" minHeight="16.0" minWidth="69.0" prefHeight="18.0" prefWidth="101.0" text="Golden Answer" />
+    <TextField fx:id="TextFieldGoldenAnswer" layoutX="65.0" layoutY="581.0" prefHeight="26.0" prefWidth="418.0" />
+    <Button fx:id="BtnSubmit" font="$x1" layoutX="491.0" layoutY="581.0" mnemonicParsing="false" onAction="#handleSubmitButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SUBMIT" textFill="WHITE" />
+    <Label layoutX="65.0" layoutY="625.0" text="Retrieved and Relevant" />
+    <Label layoutX="65.0" layoutY="651.0" text="Retrieved and Non relevant" />
+    <Label layoutX="65.0" layoutY="678.0" text="Not retrieved and Relevant" />
+    <Label layoutX="65.0" layoutY="705.0" text="Not retrieved and Non relevant" />
+    <Label layoutX="374.0" layoutY="625.0" text="PRECISION" />
+    <Label fx:id="Precision" layoutX="458.0" layoutY="608.0" text="0" textFill="RED">
+      <font>
+        <Font size="50.0" fx:id="x3" />
+      </font>
+    </Label>
+    <Label layoutX="375.0" layoutY="684.0" text="RECALL" />
+    <Label fx:id="retrievedRelevant" layoutX="290.0" layoutY="625.0" text="0" />
+    <Label fx:id="retrievedNonRelevant" layoutX="290.0" layoutY="651.0" text="0" />
+    <Label fx:id="NotRetrievedRelevant" layoutX="290.0" layoutY="678.0" text="0" />
+    <Label fx:id="NotRetrievedNonRelevant" layoutX="290.0" layoutY="706.0" text="0" />
+    <Label fx:id="Recall" font="$x3" layoutX="459.0" layoutY="666.0" text="0" textFill="RED" />
+  </children>
 </AnchorPane>
