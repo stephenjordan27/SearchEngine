@@ -257,7 +257,9 @@ class CosineSimilarityResult implements Comparable<CosineSimilarityResult>{
         return this.documentName;
     }
     
-    
+    public double getResult(){
+        return this.result;
+    }
     
 }
 
