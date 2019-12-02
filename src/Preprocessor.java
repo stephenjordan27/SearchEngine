@@ -35,7 +35,7 @@ public class Preprocessor{
 	 * @param inputString baris pada dokumen
 	 * @return string dengan kata-kata dalam bentuk dasar.
 	 **/
-	public static String lemmatize(String inputString){
+            public static String lemmatize(String inputString){
 		StanfordCoreNLP stanfordCoreNLP = pipeline;
 		boolean first=true;
 		String processedLine,lemma;
