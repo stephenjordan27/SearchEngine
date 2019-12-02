@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="765.951171875" prefWidth="672.0" style="-fx-background-color: rgb(255,255,255);" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="765.951171875" prefWidth="672.0" style="-fx-background-color: rgb(255,255,255);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="FXMLDocumentController">
   <children>
-    <Pane layoutX="0.0" layoutY="-6.0" prefHeight="230.0" prefWidth="665.0" style="-fx-background-color: rgb(87, 202, 255);">
+    <Pane layoutX="0.0" layoutY="-6.0" prefHeight="230.0" prefWidth="672.0" style="-fx-background-color: rgb(87, 202, 255);">
       <children>
         <Label layoutX="65.0" layoutY="22.0" prefHeight="57.0" prefWidth="287.0" text="Our Search Engine" textFill="WHITE">
           <font>
@@ -24,7 +28,6 @@
           </font>
         </Button>
         <Button fx:id="btnOr" font="$x1" layoutX="127.0" layoutY="146.0" mnemonicParsing="false" onAction="#handleORButton" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: rgb(14, 47, 86);" text="OR" textFill="WHITE" />
-
         <Button fx:id="btnResetQuery" font="$x1" layoutX="495.0" layoutY="137.0" mnemonicParsing="false" onAction="#handleResetButton" prefHeight="26.0" prefWidth="115.0" style="-fx-background-color: rgb(255, 0, 0);" text="RESET" textFill="WHITE" />
         <RadioButton fx:id="radioButtonCS" layoutX="215.0" layoutY="190.0" mnemonicParsing="false" onMouseClicked="#handleCSRadioButton" text="Cosine Similarity" />
         <RadioButton fx:id="radioButtonLM" layoutX="372.0" layoutY="190.0" mnemonicParsing="false" onMouseClicked="#handleLMRadioButton" text="Language Model" />
@@ -36,12 +39,11 @@
         <Label layoutX="340.0" layoutY="82.0" text="Ranking " />
         <TextField id="TextFieldQuery" fx:id="TextThreshold" layoutX="417.0" layoutY="105.0" prefHeight="26.0" prefWidth="73.0" />
         <Label layoutX="415.0" layoutY="82.0" text="Threshold" />
-
       </children>
     </Pane>
-    <ListView fx:id="ListViewResult" layoutX="67.0" layoutY="298.0" onMouseClicked="#handleListViewClick" prefHeight="247.0" prefWidth="542.0" />
+    <ListView fx:id="ListViewResult" layoutX="66.0" layoutY="298.0" onMouseClicked="#handleListViewClick" prefHeight="247.0" prefWidth="542.0" />
     <Label fx:id="LabelProcessingTime" layoutX="66.0" layoutY="268.0" prefHeight="17.0" prefWidth="469.0" text="Waktu Pencarian : 0 s " />
-    <TextField fx:id="TextFieldGoldenAnswer" layoutX="66.0" layoutY="583.0" prefHeight="26.0" prefWidth="415.0" />
+    <TextField fx:id="TextFieldGoldenAnswer" layoutX="65.0" layoutY="583.0" prefHeight="26.0" prefWidth="415.0" />
     <Button fx:id="BtnSubmit" font="$x1" layoutX="490.0" layoutY="582.0" mnemonicParsing="false" onAction="#handleSubmitButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SUBMIT" textFill="WHITE" />
     <Label layoutX="65.0" layoutY="623.0" text="Retrieved and Relevant" />
     <Label layoutX="65.0" layoutY="652.0" text="Retrieved and Non relevant" />
@@ -64,6 +66,7 @@
         <Font name="System Bold" size="18.0" fx:id="x2" />
       </font>
     </Label>
-    <Label font="$x2" layoutX="67.0" layoutY="553.0" text="Golden Answer" />
+    <Label font="$x2" layoutX="66.0" layoutY="553.0" text="Golden Answer" />
+    <Label layoutX="201.0" layoutY="556.0" prefWidth="405.0" text="( input dipisah berdasarkan spasi, c/: Doc001.txt Doc002.txt )" />
   </children>
 </AnchorPane>
