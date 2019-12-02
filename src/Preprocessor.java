@@ -120,7 +120,7 @@ public class Preprocessor{
         inputString = Normalization.formatString(inputString);
 
         //lematization
-        inputString = lemmatize(inputString);
+        //inputString = lemmatize(inputString);
 
         //porter stemmer
         inputString = stem(inputString);
