@@ -29,10 +29,10 @@ public class BooleanQuery {
         ArrayList<String> result = new ArrayList<String>();
         for (int i = 0; i < vector.size(); i++) {
             if(vector.get(i)==1){
-                if(i<=9){
+                if((i+1)<=9){
                     result.add("Doc00"+(i+1)+".txt");
                 }
-                else if(i<=99){
+                else if((i+1)<=99){
                     result.add("Doc0"+(i+1)+".txt");
                 }
                 else{
