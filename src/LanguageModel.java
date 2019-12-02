@@ -23,9 +23,15 @@ public class LanguageModel
     private String query;
     private double lamda;
     private String direktori;
+    private ArrayList<String> tempListDocs;
+    private ArrayList<String> listDocs;
+    private TreeMap<String,ArrayList<String>> dictionary; 
     
-    public LanguageModel()
+    public LanguageModel(TreeMap<String,ArrayList<String>> dictionary)
     {
+        this.dictionary = dictionary;
+        this.listDocs = new ArrayList<String>();
+        this.tempListDocs = new ArrayList<String>();
         this.lamda = 0.25;
         this.direktori = "cleaned_dataset";
     }
@@ -35,16 +41,16 @@ public class LanguageModel
         this.query = q;
     }
     
-    public TreeMap<Double,String> calculateRankingHashMap(ArrayList<String> listDocs) throws FileNotFoundException, IOException{
+    public TreeMap<Double,String> calculateRankingHashMap() throws FileNotFoundException, IOException{
         TreeMap<Double,String> ranking = new TreeMap<>(Collections.reverseOrder());
-        double[] rank = this.calculateRanking(listDocs);
+        double[] rank = this.calculateRanking();
         for(int i = 0;i < rank.length;i++){
             ranking.put(rank[i],listDocs.get(i));
         }
         return ranking;
     }
     
-    public double[] calculateRanking(ArrayList<String> listDocs) throws FileNotFoundException, IOException
+    public double[] calculateRanking() throws FileNotFoundException, IOException
     {
         String[] wordQuery = this.query.split("\\s+");
         double[] equation = new double[wordQuery.length];
@@ -93,6 +99,19 @@ public class LanguageModel
         }
         
         return ranking;
+    }
+    
+    public void cariDocYangMemilikiKataQuery()
+    {
+        String[] wordQuery = this.query.split("\\s+");
+        for(int i = 0;i<wordQuery.length;i++)
+        {
+            this.tempListDocs = this.dictionary.get(wordQuery[i]);
+            for(int j=0;j<this.tempListDocs.size();j++)
+            {
+                this.listDocs.add(this.tempListDocs.get(j));
+            }
+        }
     }
     
     public int hitungKataDoc(String namaFile) throws FileNotFoundException, IOException

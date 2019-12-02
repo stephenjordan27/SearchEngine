@@ -45,7 +45,7 @@ public class BooleanQuery {
     }
     
     public List<Integer> ProcessBooleanQuery(String query) {
-        String[] queryTerm = query.toLowerCase().split(" ");
+        String[] queryTerm = query.toLowerCase().split("\\s+");
         List<Integer> operands = null;
         String operator = "";
         boolean hasNotOperator = false;

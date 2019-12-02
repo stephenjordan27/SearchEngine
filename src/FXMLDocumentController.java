@@ -50,6 +50,7 @@ public class FXMLDocumentController implements Initializable {
     private CosineSimilarity cs;
     private CosineSimilarityResult[] cosineSimilarity;
     private ArrayList<String> resultLM;
+    private ArrayList<String> result2;
     private long startCS = 0, endCS = 0, startLM = 0, endLM = 0;
     private BM25 bm25;
     private final int sumOfDocument = 154;
@@ -66,6 +67,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label label, LabelProcessingTime, retrievedRelevant, retrievedNonRelevant, NotRetrievedRelevant, NotRetrievedNonRelevant, Precision, Recall;
 
+    @FXML
+    private RadioButton RadioBtnTop5,RadioBtnTop10,radioButtonCS,radioButtonLM,radioButtonBM25,radioButtonBQ;
+    
+    @FXML 
+    private Button BtnSearch,BtnSubmit,btnAnd,btnOr,btnResetQuery;
+    
     @FXML
     private RadioButton RadioBtnTop5, RadioBtnTop10, radioButtonCS, radioButtonLM;
 
@@ -164,6 +171,34 @@ public class FXMLDocumentController implements Initializable {
         this.defaultMode = true;
     }
 
+    @FXML
+    private void handleBQRadioButton(MouseEvent event)
+    {
+         //kosongkan list hasil pencarian, agar tidak saling tumpang tindih
+        this.ListViewResult.getItems().clear();
+            
+        System.out.println("Metode yang dipilih: Boolean Query");
+        
+        ObservableList<String> test;
+        if(this.rank>0){
+            if(this.result2.size()>=this.rank){
+                test = FXCollections.<String>observableArrayList(this.result2.subList(0, this.rank));
+            }else{
+                test = FXCollections.<String>observableArrayList(this.result2);
+            }
+        }else{
+             test = FXCollections.<String>observableArrayList(this.result2);
+        }
+        this.ListViewResult.getItems().addAll(test);
+        //this.LabelProcessingTime.setText("Menampilkan "+this.result2.size()+" hasil dengan ranking Language Model ("+(endLM-startLM)*1.0/1000*1.0+" detik)");
+        this.defaultMode = true;
+    }
+    
+    @FXML
+    private void handleBM25RadioButton(MouseEvent event){
+    
+    }
+    
     @FXML
     private void handleRankInput(KeyEvent event){
         this.ListViewResult.getItems().clear();
@@ -310,8 +345,8 @@ public class FXMLDocumentController implements Initializable {
 
         String cleanQuery = Preprocessor.preProcess(text);
         //cari dokumen yang mengandung term-term yang dicari
-        ArrayList<String> result2 = bq.documentBooleanQuery(this.PreprocessQuery(text.trim()));
-
+        result2 = bq.documentBooleanQuery(this.PreprocessQuery(text.trim()));
+        
         //hitung cosine similarity pada dokumen hasil pencarian(?)
         this.startCS = System.currentTimeMillis();
         CosineSimilarityResult[] cosineSimilarity = this.cs.ranking(cleanQuery);
@@ -327,10 +362,12 @@ public class FXMLDocumentController implements Initializable {
 
         //language model
         this.lm.setQuery(cleanQuery);
-        double[] ranking = this.lm.calculateRanking(result2);
-
+        this.lm.cariDocYangMemilikiKataQuery();
+        double[] ranking = this.lm.calculateRanking();
+        
         this.startLM = System.currentTimeMillis();
-        TreeMap<Double, String> rank = this.lm.calculateRankingHashMap(result2);
+        
+        TreeMap<Double,String> rank = this.lm.calculateRankingHashMap();
         this.endLM = System.currentTimeMillis();
 
         System.out.println("query = " + query);
@@ -375,15 +412,15 @@ public class FXMLDocumentController implements Initializable {
         }
         return output;
     }
-
-    private String PreprocessQuery(String query) {
-        String output = "";
-        String[] words = query.split(" ");
-        for (String word : words) {
-            if (word.equals("and") || word.equals("or") || word.equals("not")) {
-                output += " " + word;
-            } else {
-                output += " " + Preprocessor.preProcess(word).trim();
+    
+    private String PreprocessQuery(String query){
+        String output="";
+        String[] words = query.split("\\s+");
+        for(String word: words){
+            if(word.equals("and")||word.equals("or")||word.equals("not")){
+                output += " "+word;           
+            }else{
+                output += " "+Preprocessor.preProcess(word).trim();
             }
         }
         return output.trim();
@@ -416,8 +453,8 @@ public class FXMLDocumentController implements Initializable {
             this.cs.initialize();
 
             //siapkan language model
-            this.lm = new LanguageModel();
-
+            this.lm = new LanguageModel(this.dictionary);
+            
             this.bm25 = new BM25(dictionary);
         } catch (IOException ex) {
             ex.printStackTrace();
