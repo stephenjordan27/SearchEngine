@@ -51,7 +51,7 @@ public class FXMLDocumentController implements Initializable {
     private CosineSimilarityResult[] cosineSimilarity;
     private ArrayList<String> resultLM;
     private ArrayList<String> result2;
-    private long startCS = 0, endCS = 0, startLM = 0, endLM = 0;
+    private long startCS = 0, endCS = 0, startLM = 0, endLM = 0, startBQ = 0, endBQ = 0;
     private BM25 bm25;
     private final int sumOfDocument = 154;
 
@@ -68,17 +68,10 @@ public class FXMLDocumentController implements Initializable {
     private Label label, LabelProcessingTime, retrievedRelevant, retrievedNonRelevant, NotRetrievedRelevant, NotRetrievedNonRelevant, Precision, Recall;
 
     @FXML
-    private RadioButton RadioBtnTop5,RadioBtnTop10,radioButtonCS,radioButtonLM,radioButtonBM25,radioButtonBQ;
+    private RadioButton RadioBtnTop5,RadioBtnTop10,radioButtonCS,radioButtonLM,radioButtonBQ;
     
     @FXML 
     private Button BtnSearch,BtnSubmit,btnAnd,btnOr,btnResetQuery;
-    
-    @FXML
-    private RadioButton RadioBtnTop5, RadioBtnTop10, radioButtonCS, radioButtonLM;
-
-    @FXML
-
-    private Button BtnSearch, BtnSubmit, btnAnd, btnOr, btnResetQuery;
 
     @FXML
     private TextField TextFieldQuery, TextFieldGoldenAnswer, TextThreshold,textFieldRank;
@@ -190,13 +183,8 @@ public class FXMLDocumentController implements Initializable {
              test = FXCollections.<String>observableArrayList(this.result2);
         }
         this.ListViewResult.getItems().addAll(test);
-        //this.LabelProcessingTime.setText("Menampilkan "+this.result2.size()+" hasil dengan ranking Language Model ("+(endLM-startLM)*1.0/1000*1.0+" detik)");
+        this.LabelProcessingTime.setText("Menampilkan "+this.result2.size()+" hasil dengan boolean query ("+(endBQ-startBQ)*1.0/1000*1.0+" detik)");
         this.defaultMode = true;
-    }
-    
-    @FXML
-    private void handleBM25RadioButton(MouseEvent event){
-    
     }
     
     @FXML
@@ -345,7 +333,9 @@ public class FXMLDocumentController implements Initializable {
 
         String cleanQuery = Preprocessor.preProcess(text);
         //cari dokumen yang mengandung term-term yang dicari
+        this.startBQ = System.currentTimeMillis();
         result2 = bq.documentBooleanQuery(this.PreprocessQuery(text.trim()));
+        this.endBQ = System.currentTimeMillis();
         
         //hitung cosine similarity pada dokumen hasil pencarian(?)
         this.startCS = System.currentTimeMillis();
@@ -377,10 +367,6 @@ public class FXMLDocumentController implements Initializable {
 //        }
 //        long end = System.currentTimeMillis();
 
-        //BM-25
-        long startBM25 = System.currentTimeMillis();
-
-        long endBM25 = System.currentTimeMillis();
 
         this.cosineSimilarity = cosineSimilarity;
 
@@ -434,7 +420,7 @@ public class FXMLDocumentController implements Initializable {
         this.rankingMethod = new ToggleGroup();
         this.radioButtonCS.setToggleGroup(this.rankingMethod);
         this.radioButtonLM.setToggleGroup(this.rankingMethod);
-//        this.radioButtonBM25.setToggleGroup(this.rankingMethod);
+        this.radioButtonBQ.setToggleGroup(this.rankingMethod);
 
         this.radioButtonCS.setSelected(true);
         //siapkan preprocessor
