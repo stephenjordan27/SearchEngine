@@ -298,7 +298,7 @@ public class FXMLDocumentController implements Initializable {
             return;
         }
         
-        String cleanQuery = Preprocessor.preProcess(text);
+        String cleanQuery = Preprocessor.preProcessQuery(text);
         //cari dokumen yang mengandung term-term yang dicari
         ArrayList<String> result2 = bq.documentBooleanQuery(this.PreprocessQuery(text.trim()));
         
@@ -378,9 +378,9 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ToggleGroup tg = new ToggleGroup();
-        this.RadioBtnTop10.setToggleGroup(tg);
-        this.RadioBtnTop5.setToggleGroup(tg);
-        this.RadioBtnTop5.setSelected(true);
+//        this.RadioBtnTop10.setToggleGroup(tg);
+//        this.RadioBtnTop5.setToggleGroup(tg);
+//        this.RadioBtnTop5.setSelected(true);
         
         long start = System.currentTimeMillis();
         System.out.println(this.radioButtonCS==null);

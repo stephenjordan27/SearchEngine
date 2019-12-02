@@ -42,7 +42,7 @@ public class Preprocessor{
 		
 		CoreDocument coreDocument = new CoreDocument(inputString);
 		stanfordCoreNLP.annotate(coreDocument);
-		List<CoreLabel>coreLabelList = coreDocument.tokens();
+		List<CoreLabel> coreLabelList = coreDocument.tokens();
 		processedLine="";
 		
 		for(CoreLabel coreLabel : coreLabelList){
@@ -88,9 +88,15 @@ public class Preprocessor{
         porterStemmer stemmer = new porterStemmer();
         String[] arrInput = inputString.split(" ");
         for (int j = 0; j < arrInput.length; j++) {
-            stemmer.setCurrent(arrInput[j]);
-            stemmer.stem();
-            outputString += stemmer.getCurrent() + " ";
+            if(!arrInput[j].substring(arrInput[j].length()-3,arrInput[j].length()).equalsIgnoreCase("ing")){
+                stemmer.setCurrent(arrInput[j]);
+                stemmer.stem();
+                outputString += stemmer.getCurrent() + " ";
+            }
+            else{
+                outputString += arrInput[j] + " ";
+            }
+            
         }
         return outputString;
     }
@@ -116,6 +122,22 @@ public class Preprocessor{
         //lematization
         inputString = lemmatize(inputString);
 
+        //porter stemmer
+        inputString = stem(inputString);
+
+        return inputString;
+    }
+    
+    public static String preProcessQuery(String inputString) {
+        //buang spasi di depan atau belakang
+        inputString = inputString.trim();
+        
+        //stop words
+        inputString = removeStopWords(inputString);
+
+        //normalization
+        inputString = Normalization.formatString(inputString);
+        
         //porter stemmer
         inputString = stem(inputString);
 
