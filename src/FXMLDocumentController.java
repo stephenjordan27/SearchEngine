@@ -94,7 +94,11 @@ public class FXMLDocumentController implements Initializable {
             }
             ObservableList<String> test;
         if(this.isTop5){
-            test = FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
+            if(resultCS.size()>=5){
+                test = FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
+            }else{
+                 test = FXCollections.<String>observableArrayList(resultCS);
+            }
         }else{
             test = FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
         }
@@ -111,8 +115,12 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("Metode yang dipilih: Language Model");
         
         ObservableList<String> test;
-        if(this.isTop5){          
-        test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 5));
+        if(this.isTop5){
+            if(this.resultLM.size()>=5){
+                test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 5));
+            }else{
+                test = FXCollections.<String>observableArrayList(this.resultLM);
+            }
         }else{
              test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 10));
         }
@@ -136,10 +144,20 @@ public class FXMLDocumentController implements Initializable {
                 if(res.getResult()!=0.0)
                     resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
             }
-            ObservableList<String> test=FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
+            ObservableList<String> test;
+            if(resultCS.size()>=5){
+                test = FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
+            }else{
+                test = FXCollections.<String>observableArrayList(resultCS);
+            }
             this.ListViewResult.getItems().addAll(test);
         }else if(this.rankingMethod.getSelectedToggle().equals(this.radioButtonLM)){
-            ObservableList<String> test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 5));
+            ObservableList<String> test;
+            if(this.resultLM.size()>=5){
+                test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 5));
+            }else{
+                test = FXCollections.<String>observableArrayList(this.resultLM);
+            }
             this.ListViewResult.getItems().addAll(test);
         }
     }
@@ -154,10 +172,20 @@ public class FXMLDocumentController implements Initializable {
                 if(res.getResult()!=0.0)
                     resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
             }
-            ObservableList<String> test=FXCollections.<String>observableArrayList(resultCS.subList(0, 10));
+            ObservableList<String> test;
+            if(resultCS.size()>=10){
+                test = FXCollections.<String>observableArrayList(resultCS.subList(0, 10));
+            }else{
+                test = FXCollections.<String>observableArrayList(resultCS);
+            }
             this.ListViewResult.getItems().addAll(test);
         }else if(this.rankingMethod.getSelectedToggle().equals(this.radioButtonLM)){
-            ObservableList<String> test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 10));
+            ObservableList<String> test;
+            if(this.resultLM.size()>=10){
+                test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 10));
+            }else{
+                test = FXCollections.<String>observableArrayList(this.resultLM);
+            }
             this.ListViewResult.getItems().addAll(test);
         }
     }
@@ -246,8 +274,8 @@ public class FXMLDocumentController implements Initializable {
         retrievedNonRelevant.setText(pr.getFp()+"");
         NotRetrievedRelevant.setText(pr.getFn()+"");
         NotRetrievedNonRelevant.setText(pr.getTn()+"");
-        Precision.setText(pr.precision()+"");
-        Recall.setText(pr.recall()+"");
+        Precision.setText(String.format("%.2f",pr.precision())+"");
+        Recall.setText(String.format("%.2f",pr.recall())+"");
     }
     
     //References: https://examples.javacodegeeks.com/desktop-java/javafx/listview-javafx/javafx-listview-example/
