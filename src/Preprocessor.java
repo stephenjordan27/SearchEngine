@@ -128,7 +128,7 @@ public class Preprocessor{
         return inputString;
     }
     
-    public static String preProcessQuery(String inputString) {
+    public static String preProcessWithoutLemmatization(String inputString) {
         //buang spasi di depan atau belakang
         inputString = inputString.trim();
         
