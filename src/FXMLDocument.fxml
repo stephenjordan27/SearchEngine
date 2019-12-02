@@ -18,8 +18,8 @@
                   <Font name="Baloo" size="34.0" />
                </font>
             </Label>
-            <RadioButton fx:id="RadioBtnTop5" layoutX="353.0" layoutY="149.0" mnemonicParsing="false" text="Show Top 5" />
-            <RadioButton fx:id="RadioBtnTop10" layoutX="456.0" layoutY="149.0" mnemonicParsing="false" text="Show Top 10" />
+            <RadioButton fx:id="RadioBtnTop5" layoutX="353.0" layoutY="149.0" mnemonicParsing="false" onMouseClicked="#handleTop5RadioButton" text="Top 5" />
+            <RadioButton fx:id="RadioBtnTop10" layoutX="456.0" layoutY="149.0" mnemonicParsing="false" onMouseClicked="#handleTop10RadioButton" text="Top 10" />
             <Label fx:id="label1" layoutX="66.0" layoutY="125.0" minHeight="16" minWidth="69" text="Boolean Query">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -50,9 +50,9 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <RadioButton fx:id="radioButtonCS" layoutX="64.0" layoutY="195.0" mnemonicParsing="false" onMouseClicked="#handleCSRadioButton" text="TF-IDF Cosine Similarity" />
-            <RadioButton fx:id="radioButtonLM" layoutX="220.0" layoutY="195.0" mnemonicParsing="false" onMouseClicked="#handleLMRadioButton" text="Language Model" />
-            <RadioButton fx:id="radioButtonBM25" layoutX="339.0" layoutY="195.0" mnemonicParsing="false" onMouseClicked="#handleBM25RadioButton" text="BM-25" />
+            <RadioButton fx:id="radioButtonCS" layoutX="64.0" layoutY="195.0" mnemonicParsing="false" onMouseClicked="#handleCSRadioButton" text="Cosine Similarity" />
+            <RadioButton fx:id="radioButtonLM" layoutX="259.0" layoutY="195.0" mnemonicParsing="false" onMouseClicked="#handleLMRadioButton" text="Language Model" />
+            <RadioButton fx:id="radioButtonBM25" layoutX="408.0" layoutY="195.0" mnemonicParsing="false" onMouseClicked="#handleBM25RadioButton" text="BM-25" />
          </children></Pane>
       <Button fx:id="BtnSearch" layoutX="443.0" layoutY="85.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SEARCH" textFill="WHITE">
          <font>

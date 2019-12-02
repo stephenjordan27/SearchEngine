@@ -53,7 +53,7 @@ public class FXMLDocumentController implements Initializable {
     private BM25 bm25;
     
     private LanguageModel lm;
-    private boolean isAnd = false,defaultMode=true;
+    private boolean isAnd = false,defaultMode=true,isTop5=true;
     
     private ToggleGroup rankingMethod;
     @FXML
@@ -88,7 +88,8 @@ public class FXMLDocumentController implements Initializable {
             System.out.println("Metode yang dipilih: Cosine Similarity");
             ArrayList<String> resultCS =new ArrayList();
             for(CosineSimilarityResult res: this.cosineSimilarity){
-                resultCS.add(res.getDocumentName()+"\t"+"Doc"+String.format("%03d",res.getDocumentName())+".txt");
+                if(res.getResult()!=0.0)
+                    resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
             }
             
         ObservableList<String> test = FXCollections.<String>observableArrayList(resultCS);
@@ -116,6 +117,15 @@ public class FXMLDocumentController implements Initializable {
     
     }
     
+    @FXML
+    private void handleTop5RadioButton(MouseEvent event){
+        this.isTop5=true;
+    }
+    
+    @FXML
+    private void handleTop10RadioButton(MouseEvent event){
+        this.isTop5 = false;
+    }
     @FXML
     private void handleListViewClick(MouseEvent event){
         String[] row= ((String)this.ListViewResult.getSelectionModel().getSelectedItem()).split("\t");
@@ -293,8 +303,10 @@ public class FXMLDocumentController implements Initializable {
         ToggleGroup tg = new ToggleGroup();
         this.RadioBtnTop10.setToggleGroup(tg);
         this.RadioBtnTop5.setToggleGroup(tg);
-        long start = System.currentTimeMillis();
+        this.RadioBtnTop5.setSelected(true);
         
+        long start = System.currentTimeMillis();
+        System.out.println(this.radioButtonCS==null);
         this.rankingMethod =new ToggleGroup();
         this.radioButtonCS.setToggleGroup(this.rankingMethod);
         this.radioButtonLM.setToggleGroup(this.rankingMethod);

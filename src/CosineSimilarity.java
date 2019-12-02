@@ -252,9 +252,9 @@ class CosineSimilarityResult implements Comparable<CosineSimilarityResult>{
             return 1;
         }
     }
-
-    public String getDocumentName() {
-        return documentName;
+    
+    public String getDocumentName(){
+        return this.documentName;
     }
     
     

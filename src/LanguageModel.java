@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.TreeMap;
 
 /*
@@ -35,7 +36,7 @@ public class LanguageModel
     }
     
     public TreeMap<Double,String> calculateRankingHashMap(ArrayList<String> listDocs) throws FileNotFoundException, IOException{
-        TreeMap<Double,String> ranking = new TreeMap<>();
+        TreeMap<Double,String> ranking = new TreeMap<>(Collections.reverseOrder());
         double[] rank = this.calculateRanking(listDocs);
         for(int i = 0;i < rank.length;i++){
             ranking.put(rank[i],listDocs.get(i));
