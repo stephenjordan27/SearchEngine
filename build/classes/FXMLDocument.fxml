@@ -29,11 +29,11 @@
         </Button>
         <Button fx:id="btnOr" font="$x1" layoutX="127.0" layoutY="146.0" mnemonicParsing="false" onAction="#handleORButton" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: rgb(14, 47, 86);" text="OR" textFill="WHITE" />
         <Button fx:id="btnResetQuery" font="$x1" layoutX="492.0" layoutY="141.0" mnemonicParsing="false" onAction="#handleResetButton" prefHeight="26.0" prefWidth="115.0" style="-fx-background-color: rgb(255, 0, 0);" text="RESET" textFill="WHITE" />
-        <RadioButton fx:id="radioButtonCS" layoutX="215.0" layoutY="196.0" mnemonicParsing="false" onMouseClicked="#handleCSRadioButton" text="Cosine Similarity" />
-        <RadioButton fx:id="radioButtonLM" layoutX="372.0" layoutY="195.0" mnemonicParsing="false" onMouseClicked="#handleLMRadioButton" text="Language Model" />
-        <RadioButton fx:id="radioButtonBM25" layoutX="534.0" layoutY="194.0" mnemonicParsing="false" onMouseClicked="#handleBM25RadioButton" text="BM-25" />
+        <RadioButton fx:id="radioButtonCS" layoutX="215.0" layoutY="193.0" mnemonicParsing="false" onMouseClicked="#handleCSRadioButton" text="Cosine Similarity" />
+        <RadioButton fx:id="radioButtonLM" layoutX="372.0" layoutY="192.0" mnemonicParsing="false" onMouseClicked="#handleLMRadioButton" text="Language Model" />
+        <RadioButton fx:id="radioButtonBM25" layoutX="534.0" layoutY="191.0" mnemonicParsing="false" onMouseClicked="#handleBM25RadioButton" text="BM-25" />
         <Button fx:id="BtnSearch" font="$x1" layoutX="492.0" layoutY="108.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="26.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SEARCH" textFill="WHITE" />
-        <RadioButton id="radioButtonBM25" layoutX="67.0" layoutY="195.0" mnemonicParsing="false" onMouseClicked="#handleBM25RadioButton" text="Boolean Query" />
+        <RadioButton id="radioButtonBM25" layoutX="67.0" layoutY="192.0" mnemonicParsing="false" onMouseClicked="#handleBM25RadioButton" text="Boolean Query" />
         <Button id="btnOr" font="$x1" layoutX="188.0" layoutY="146.0" mnemonicParsing="false" onAction="#handleORButton" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: rgb(14, 47, 86);" text="NOT" textFill="WHITE" />
         <TextField fx:id="TextFieldQuery" layoutX="68.0" layoutY="110.0" prefHeight="26.0" prefWidth="321.0" />
         <TextField id="TextFieldQuery" layoutX="397.0" layoutY="109.0" prefHeight="26.0" prefWidth="84.0" />
@@ -42,16 +42,16 @@
       </children>
     </Pane>
     <ListView fx:id="ListViewResult" layoutX="67.0" layoutY="291.0" onMouseClicked="#handleListViewClick" prefHeight="247.0" prefWidth="542.0" />
-    <Label fx:id="LabelProcessingTime" layoutX="66.0" layoutY="261.0" prefHeight="17.0" prefWidth="469.0" text="Waktu Pencarian : 0 s " />
+    <Label fx:id="LabelProcessingTime" layoutX="66.0" layoutY="263.0" prefHeight="17.0" prefWidth="469.0" text="Waktu Pencarian : 0 s " />
     <Label fx:id="label121" layoutX="66.0" layoutY="549.0" minHeight="16.0" minWidth="69.0" prefHeight="18.0" prefWidth="122.0" text="Golden Answer">
       <font>
         <Font name="System Bold" size="16.0" fx:id="x2" />
       </font>
     </Label>
-    <TextField fx:id="TextFieldGoldenAnswer" layoutX="64.0" layoutY="578.0" prefHeight="26.0" prefWidth="418.0" />
-    <Button fx:id="BtnSubmit" font="$x1" layoutX="490.0" layoutY="577.0" mnemonicParsing="false" onAction="#handleSubmitButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SUBMIT" textFill="WHITE" />
-    <Label layoutX="65.0" layoutY="625.0" text="Retrieved and Relevant" />
-    <Label layoutX="65.0" layoutY="654.0" text="Retrieved and Non relevant" />
+    <TextField fx:id="TextFieldGoldenAnswer" layoutX="64.0" layoutY="579.0" prefHeight="25.9998779296875" prefWidth="418.0" />
+    <Button fx:id="BtnSubmit" font="$x1" layoutX="490.0" layoutY="578.0" mnemonicParsing="false" onAction="#handleSubmitButton" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SUBMIT" textFill="WHITE" />
+    <Label layoutX="65.0" layoutY="623.0" text="Retrieved and Relevant" />
+    <Label layoutX="65.0" layoutY="652.0" text="Retrieved and Non relevant" />
     <Label layoutX="65.0" layoutY="683.0" text="Not retrieved and Relevant" />
     <Label layoutX="65.0" layoutY="711.0" text="Not retrieved and Non relevant" />
     <Label layoutX="428.0" layoutY="635.0" text="PRECISION" />
@@ -61,8 +61,8 @@
       </font>
     </Label>
     <Label layoutX="429.0" layoutY="701.0" text="RECALL" />
-    <Label fx:id="retrievedRelevant" layoutX="290.0" layoutY="625.0" text="0" />
-    <Label fx:id="retrievedNonRelevant" layoutX="290.0" layoutY="655.0" text="0" />
+    <Label fx:id="retrievedRelevant" layoutX="290.0" layoutY="623.0" text="0" />
+    <Label fx:id="retrievedNonRelevant" layoutX="290.0" layoutY="653.0" text="0" />
     <Label fx:id="NotRetrievedRelevant" layoutX="290.0" layoutY="683.0" text="0" />
     <Label fx:id="NotRetrievedNonRelevant" layoutX="290.0" layoutY="712.0" text="0" />
     <Label fx:id="Recall" font="$x3" layoutX="523.0" layoutY="678.0" text="0" textFill="RED" />
