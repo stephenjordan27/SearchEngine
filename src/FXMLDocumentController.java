@@ -124,7 +124,7 @@ public class FXMLDocumentController implements Initializable {
                 test = FXCollections.<String>observableArrayList(this.resultLM);
             }
         }else{
-             test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 10));
+             test = FXCollections.<String>observableArrayList(this.resultLM);
         }
         this.ListViewResult.getItems().addAll(test);
         this.LabelProcessingTime.setText("Menampilkan "+this.resultLM.size()+" hasil dengan ranking Language Model ("+(endLM-startLM)*1.0/1000*1.0+" detik)");
