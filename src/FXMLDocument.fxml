@@ -33,7 +33,6 @@
         <RadioButton fx:id="radioButtonLM" layoutX="372.0" layoutY="190.0" mnemonicParsing="false" onMouseClicked="#handleLMRadioButton" text="Language Model" />
         <Button fx:id="BtnSearch" font="$x1" layoutX="495.0" layoutY="104.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="26.0" prefWidth="115.0" style="-fx-background-color: rgb(14, 47, 86);" text="SEARCH" textFill="WHITE" />
         <RadioButton id="radioButtonBM25" layoutX="67.0" layoutY="190.0" mnemonicParsing="false" text="Boolean Query" />
-        <Button id="btnOr" font="$x1" layoutX="188.0" layoutY="146.0" mnemonicParsing="false" onAction="#handleORButton" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: rgb(14, 47, 86);" text="NOT" textFill="WHITE" />
         <TextField fx:id="TextFieldQuery" layoutX="68.0" layoutY="105.0" prefHeight="26.0" prefWidth="270.0" />
         <TextField id="TextFieldQuery" layoutX="341.0" layoutY="105.0" prefHeight="26.0" prefWidth="73.0" />
         <Label layoutX="69.0" layoutY="83.0" text="Query" />

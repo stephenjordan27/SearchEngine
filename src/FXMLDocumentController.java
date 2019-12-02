@@ -35,6 +35,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -54,9 +55,14 @@ public class FXMLDocumentController implements Initializable {
     private final int sumOfDocument = 154;
 
     private LanguageModel lm;
-    private boolean isAnd = false, defaultMode = true, isTop5 = true;
+
+    private boolean isAnd = false,defaultMode=true;
+    private boolean isNot = false;
+
+    private int rank=0;
 
     private ToggleGroup rankingMethod;
+    
     @FXML
     private Label label, LabelProcessingTime, retrievedRelevant, retrievedNonRelevant, NotRetrievedRelevant, NotRetrievedNonRelevant, Precision, Recall;
 
@@ -64,10 +70,11 @@ public class FXMLDocumentController implements Initializable {
     private RadioButton RadioBtnTop5, RadioBtnTop10, radioButtonCS, radioButtonLM;
 
     @FXML
+
     private Button BtnSearch, BtnSubmit, btnAnd, btnOr, btnResetQuery;
 
     @FXML
-    private TextField TextFieldQuery, TextFieldGoldenAnswer, TextThreshold;
+    private TextField TextFieldQuery, TextFieldGoldenAnswer, TextThreshold,textFieldRank;
 
     @FXML
     private ListView ListViewResult;
@@ -100,15 +107,18 @@ public class FXMLDocumentController implements Initializable {
                 resultCS.add(String.format("%.3f", res.getResult()) + "\t" + res.getDocumentName());
             }
         }
+
         ObservableList<String> test;
-        if (this.isTop5) {
-            if (resultCS.size() >= 5) {
-                test = FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
-            } else {
+        if(this.rank>0){
+            if(resultCS.size()>=this.rank){
+                test = FXCollections.<String>observableArrayList(resultCS.subList(0, this.rank));
+            }
+            else{
                 test = FXCollections.<String>observableArrayList(resultCS);
             }
-        } else {
-            test = FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
+        }else{
+            test = FXCollections.<String>observableArrayList(resultCS);
+
         }
         this.ListViewResult.getItems().addAll(test);
         this.LabelProcessingTime.setText("Menampilkan " + resultCS.size() + " hasil dengan ranking Cosine Similarity (" + (this.endCS - this.startCS) * 1.0 / 1000 * 1.0 + " detik)");
@@ -123,14 +133,16 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("Metode yang dipilih: Language Model");
 
         ObservableList<String> test;
-        if (this.isTop5) {
-            if (this.resultLM.size() >= 5) {
-                test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 5));
-            } else {
+
+        if(this.rank>0){
+            if(this.resultLM.size()>=this.rank){
+                test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, this.rank));
+            }else{
                 test = FXCollections.<String>observableArrayList(this.resultLM);
             }
-        } else {
-            test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 10));
+        }else{
+             test = FXCollections.<String>observableArrayList(this.resultLM);
+
         }
         for (int i = 0; i < test.size(); i++) {
             String[] arrOfTest = test.get(i).split("\t");
@@ -153,60 +165,40 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void handleTop5RadioButton(MouseEvent event) {
-        this.isTop5 = true;
+    private void handleRankInput(KeyEvent event){
         this.ListViewResult.getItems().clear();
-        if (this.rankingMethod.getSelectedToggle().equals(this.radioButtonCS)) {
-            ArrayList<String> resultCS = new ArrayList();
-            for (CosineSimilarityResult res : this.cosineSimilarity) {
-                if (res.getResult() != 0.0) {
-                    resultCS.add(String.format("%.3f", res.getResult()) + "\t" + res.getDocumentName());
+        String input = this.textFieldRank.getText();
+        if(input.length()==0){
+            return;
+        }else{
+            int rank= Integer.parseInt(input);
+            if(rank > 0){
+                this.ListViewResult.getItems().clear();
+                if(this.rankingMethod.getSelectedToggle().equals(this.radioButtonCS)){
+                    ArrayList<String> resultCS =new ArrayList();
+                    for(CosineSimilarityResult res: this.cosineSimilarity){
+                        if(res.getResult()!=0.0)
+                        resultCS.add(String.format("%.3f",res.getResult())+"\t"+res.getDocumentName());
+                    }
+                     ObservableList<String> test;
+                    if(resultCS.size()>=rank){
+                        test = FXCollections.<String>observableArrayList(resultCS.subList(0, rank));
+                    }else{
+                        test = FXCollections.<String>observableArrayList(resultCS);
+                    }
+                    this.ListViewResult.getItems().addAll(test);
+                }else if(this.rankingMethod.getSelectedToggle().equals(this.radioButtonLM)){
+                    ObservableList<String> test;
+                    if(this.resultLM.size()>=rank){
+                        test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, rank));
+                    }else{
+                        test = FXCollections.<String>observableArrayList(this.resultLM);
+                    }
+                    this.ListViewResult.getItems().addAll(test);
                 }
+            }else{
+                return;
             }
-            ObservableList<String> test;
-            if (resultCS.size() >= 5) {
-                test = FXCollections.<String>observableArrayList(resultCS.subList(0, 5));
-            } else {
-                test = FXCollections.<String>observableArrayList(resultCS);
-            }
-            this.ListViewResult.getItems().addAll(test);
-        } else if (this.rankingMethod.getSelectedToggle().equals(this.radioButtonLM)) {
-            ObservableList<String> test;
-            if (this.resultLM.size() >= 5) {
-                test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 5));
-            } else {
-                test = FXCollections.<String>observableArrayList(this.resultLM);
-            }
-            this.ListViewResult.getItems().addAll(test);
-        }
-    }
-
-    @FXML
-    private void handleTop10RadioButton(MouseEvent event) {
-        this.isTop5 = false;
-        this.ListViewResult.getItems().clear();
-        if (this.rankingMethod.getSelectedToggle().equals(this.radioButtonCS)) {
-            ArrayList<String> resultCS = new ArrayList();
-            for (CosineSimilarityResult res : this.cosineSimilarity) {
-                if (res.getResult() != 0.0) {
-                    resultCS.add(String.format("%.3f", res.getResult()) + "\t" + res.getDocumentName());
-                }
-            }
-            ObservableList<String> test;
-            if (resultCS.size() >= 10) {
-                test = FXCollections.<String>observableArrayList(resultCS.subList(0, 10));
-            } else {
-                test = FXCollections.<String>observableArrayList(resultCS);
-            }
-            this.ListViewResult.getItems().addAll(test);
-        } else if (this.rankingMethod.getSelectedToggle().equals(this.radioButtonLM)) {
-            ObservableList<String> test;
-            if (this.resultLM.size() >= 10) {
-                test = FXCollections.<String>observableArrayList(this.resultLM.subList(0, 10));
-            } else {
-                test = FXCollections.<String>observableArrayList(this.resultLM);
-            }
-            this.ListViewResult.getItems().addAll(test);
         }
     }
 
@@ -271,10 +263,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleResetButton(ActionEvent event) {
-        String text = this.TextFieldQuery.getText();
-        text = text.replaceAll(" and ", " ");
-        text = text.replaceAll(" or ", " ");
-        this.TextFieldQuery.setText(text);
+        this.TextFieldQuery.clear();
         this.defaultMode = true;
     }
 
@@ -377,7 +366,11 @@ public class FXMLDocumentController implements Initializable {
         input = input.trim();
         if (isAnd) {
             output = input.replaceAll(" ", " and ");
-        } else {
+        } 
+        else if(isNot){
+            output = input.replaceAll(" ", " not ");
+        }
+        else {
             output = input.replaceAll(" ", " or ");
         }
         return output;
@@ -399,10 +392,6 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ToggleGroup tg = new ToggleGroup();
-//        this.RadioBtnTop10.setToggleGroup(tg);
-//        this.RadioBtnTop5.setToggleGroup(tg);
-//        this.RadioBtnTop5.setSelected(true);
-
         long start = System.currentTimeMillis();
         System.out.println(this.radioButtonCS == null);
         this.rankingMethod = new ToggleGroup();
